@@ -1,0 +1,13 @@
+{
+  authors: ['Brandon', 'Tiffany'],
+  projects: [{ type: Schema.ObjectId, ref: 'Project' }],
+  tagline: String,
+  description: String,
+  statistics: {
+    numberOfProjects: {type: Number, default: 0},
+    numberOfContributors: {type: Number, default: 0},
+    numberOfUpvotes: {type: Number, default: 0},
+    numberOfDownvotes: {type: Number, default: 0}
+  }
+}
+
