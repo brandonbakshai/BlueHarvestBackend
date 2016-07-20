@@ -1,7 +1,7 @@
 'use strict';
 
 import db from './db.js';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 import isEmail from 'validator/lib/isEmail';
 
 const Schema = db.Schema;
