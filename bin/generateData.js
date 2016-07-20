@@ -4,6 +4,6 @@
  * to the mongodb instance backing blue harvest
  */
 
-import db from '../models/db';
+import db from '../src/models/db';
 
 

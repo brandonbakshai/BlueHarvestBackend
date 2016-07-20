@@ -9,16 +9,20 @@
     "bcrypt": "^0.8.7",
     "bcryptjs": "^2.3.0",
     "body-parser": "~1.15.1",
+    "chai": "^3.5.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "eslint": "^3.0.1",
     "express": "~4.13.4",
     "jade": "~1.11.0",
+    "mocha": "^2.5.3",
     "mongoose": "^4.5.3",
     "morgan": "~1.7.0",
     "node-bing-api": "^2.4.1",
     "request": "^2.72.0",
     "request-promise": "^3.0.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "sinon": "^1.17.4",
+    "validator": "^5.4.0"
   }
 }
