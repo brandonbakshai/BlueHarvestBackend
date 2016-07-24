@@ -34,13 +34,22 @@ const NewsItem = db.model('NewsItem', NewsItemSchema);
 NewsItemSchema.statics.fetchNewsItems = fetchNewsItems;
 NewsItemSchema.statics.generateData = generateData;
 
+/**
+ * Method returning promise to get NewsItems and serve back to client
+ * @param res
+ * @returns {Promise|Promise.<T>}
+ */
 function fetchNewsItems(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   return NewsItem.find()
-    .then((result) => { return res.send(result); })
-    .catch((err) => { throw new Error(err); })
+    .then((result) => { return res.send(result); });
 }
 
+/**
+ * Method returning promise to query bing news search api and insert data as NewsItem in mongodb instance
+ * @param res
+ * @returns {Promise|Promise.<T>}
+ */
 function generateData(res) {
   return requestPromise({
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/?Category=ScienceAndTechnology', //URL to hit
@@ -57,8 +66,7 @@ function generateData(res) {
     const jsonValues = body.value;
     return NewsItem.collection.insertMany(jsonValues);
   })
-  .then((insertedValues) => { return res.send(insertedValues); })
-  .catch((err) => { throw new Error(err); })
+  .then((insertedValues) => { return res.send(insertedValues); });
 }
 
 export default NewsItem;

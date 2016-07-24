@@ -2,17 +2,41 @@ import db from './db.js';
 
 const Schema = db.Schema;
 const BountySchema = new Schema({
-  authors: [{ type: Schema.ObjectId, ref: 'User' }],
-  projects: [{ type: Schema.ObjectId, ref: 'Project' }],
-  tagline: { type: String, required: true },
-  description: { type: String, required: true },
-  statistics: {
-    numberOfProjects: { type: Number, default: 0 },
-    numberOfContributors: { type: Number, default: 0 },
-    numberOfUpvotes: { type: Number, default: 0 },
-    numberOfDownvotes: { type: Number, default: 0 }
+  authors: [{
+    type: Schema.ObjectId,
+    ref: 'User'
+  }],
+  projects: [{
+    type: Schema.ObjectId,
+    ref: 'Project'
+  }],
+  tagline: {
+    type: String,
+    required: true
   },
-  tags: [String],
+  description: {
+    type: String,
+    required: true
+  },
+  statistics: {
+    numberOfProjects: {
+      type: Number,
+      default: 0
+    },
+    numberOfContributors: {
+      type: Number,
+      default: 0
+    },
+    numberOfUpvotes: {
+      type: Number,
+      default: 0
+    },
+    numberOfDownvotes: {
+      type: Number,
+      default: 0
+    }
+  },
+  tags: [String]
 });
 const Bounty = db.model('Bounty', BountySchema);
 

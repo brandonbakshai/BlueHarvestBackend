@@ -1,5 +1,8 @@
 {
-  authors: ['Brandon', 'Tiffany'],
+  authors: [
+    'Brandon',
+    'Tiffany'
+  ],
   projects: [{ type: Schema.ObjectId, ref: 'Project' }],
   tagline: String,
   description: String,
