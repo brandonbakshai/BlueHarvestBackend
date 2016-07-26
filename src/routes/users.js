@@ -2,6 +2,8 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/', (req, res, next) => res.send('respond with a resource'));
+router.route('/')
+  .get((req, res) => res.send('responding with a get request'))
+  .post((req, res) => res.send('responding to a post request'));
 
-module.exports = router;
+export default router;
