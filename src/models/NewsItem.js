@@ -29,10 +29,11 @@ const NewsItemSchema = new Schema({
     }],
     url: String
 });
-const NewsItem = db.model('NewsItem', NewsItemSchema);
 
 NewsItemSchema.statics.fetchNewsItems = fetchNewsItems;
 NewsItemSchema.statics.generateData = generateData;
+
+const NewsItem = db.model('NewsItem', NewsItemSchema);
 
 /**
  * Method returning promise to get NewsItems and serve back to client
@@ -42,7 +43,7 @@ NewsItemSchema.statics.generateData = generateData;
 function fetchNewsItems(res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   return NewsItem.find()
-    .then((result) => { return res.send(result); });
+    .then(result => res.send(result));
 }
 
 /**
@@ -66,7 +67,7 @@ function generateData(res) {
     const jsonValues = body.value;
     return NewsItem.collection.insertMany(jsonValues);
   })
-  .then((insertedValues) => { return res.send(insertedValues); });
+  .then(insertedValues => res.send(insertedValues));
 }
 
 export default NewsItem;
