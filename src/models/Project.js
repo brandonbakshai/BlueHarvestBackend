@@ -18,6 +18,21 @@ const ProjectSchema = new Schema({
     type: String,
     required: true
   },
+  media: {
+    gitUrl: {
+      type: String
+    },
+    images: [{
+      contentUrl: String,
+      height: Number,
+      width: Number
+    }],
+    videos: [{
+      contentUrl: String,
+      height: Number,
+      width: Number
+    }]
+  },
   statistics: {
     numberOfContributors: {
       type: Number,
@@ -32,7 +47,7 @@ const ProjectSchema = new Schema({
       default: 0
     }
   },
-  tags: [String],
+  tags: [String]
 });
 const Project = db.model('Project', ProjectSchema);
 

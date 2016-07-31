@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     validate: {
       validator: isEmail,
       message: 'Our scientists tell us {VALUE} is not a valid email address'
@@ -29,9 +30,14 @@ const User = db.model('User', UserSchema);
 const iterations = 10;
 
 UserSchema.statics.verifyPassword = verifyPassword;
-UserSchema.statics.getAllUsers = getAllUsers;
+UserSchema.statics.getAllUsersWithFilter = getAllUsersWithFilter;
 UserSchema.statics.generateData = generateData;
-UserSchema.statics.createNewUser = createNewUser;
+
+// CRUD
+UserSchema.statics.createUser = createUser;
+UserSchema.statics.getUser = getUser;
+UserSchema.statics.deleteUser = deleteUser;
+UserSchema.statics.updateUser = updateUser;
 
 /**
  * Method returning promise to create a new user
@@ -40,13 +46,47 @@ UserSchema.statics.createNewUser = createNewUser;
  * @param password
  * @returns {Promise|Promise.<TResult>|*}
  */
-function createNewUser(name, email, password) {
+function createUser(name, email, password) {
   let user = { name, email };
   return bcrypt.hash(password, iterations)
-    .then((hash) => {
-      user.hashedPassword = hash;
-      return User.collection.insert(user);
-    });
+  .then((hash) => {
+    user.hashedPassword = hash;
+    return User.collection.insert(user);
+  });
+}
+
+/**
+ * Method to get user from database
+ * @param email
+ * @returns {Query|*}
+ */
+function getUser(email) {
+  return User.findOne({ email: email });
+}
+
+/**
+ * Method to update user fields given unique email
+ * @param email
+ * @param name
+ * @returns {Promise}
+ */
+function updateUser({ email, name }) {
+  return User.findOne({ email: email })
+  .then(user => {
+    user.name = name;
+    return user.save();
+  });
+}
+
+/**
+ * Method to delete user from db
+ * @param name
+ * @param email
+ * @param password
+ * @returns {Promise|*|Promise.<TResult>}
+ */
+function deleteUser(email) {
+  return User.remove({ email });
 }
 
 /**
@@ -57,7 +97,7 @@ function createNewUser(name, email, password) {
  */
 function verifyPassword(email, password) {
     return User.findOne({ email }, 'hashedPassword')
-      .then(user => bcrypt.compare(password, user.hashedPassword));
+    .then(user => bcrypt.compare(password, user.hashedPassword));
 }
 
 /**
@@ -70,8 +110,8 @@ function generateData(res) {
   const email = "brandon.bakhshai@gmail.com";
   const password = "password";
 
-  return createNewUser(name, email, password)
-  .then((data) => { return res.send(data); });
+  return createUser(name, email, password)
+  .then(data => res.send(data));
 }
 
 /**
@@ -79,10 +119,8 @@ function generateData(res) {
  * @param res
  * @returns {Promise|Promise.<TResult>}
  */
-function getAllUsers(res) {
-    return User.find({})
-      .exec()
-      .then((users) => { return res.send(users); })
+function getAllUsersWithFilter(filter = {}) {
+    return User.find(filter).exec();
 }
 
 export default User;
