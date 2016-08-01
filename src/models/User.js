@@ -60,8 +60,8 @@ function createUser({ name, email, password }) {
  * @param email
  * @returns {Query|*}
  */
-function getUser(email) {
-  return User.findOne({ email: email });
+function getUser(id) {
+  return User.findOne({ _id: id });
 }
 
 /**
@@ -70,10 +70,11 @@ function getUser(email) {
  * @param name
  * @returns {Promise}
  */
-function updateUser({ email, name }) {
-  return User.findOne({ email: email })
+function updateUser({ id, email, name }) {
+  return User.findOne({ _id: id })
   .then(user => {
-    user.name = name;
+    user.name = name || user.name;
+    user.email = email || user.email;
     return user.save();
   });
 }
@@ -85,8 +86,8 @@ function updateUser({ email, name }) {
  * @param password
  * @returns {Promise|*|Promise.<TResult>}
  */
-function deleteUser(email) {
-  return User.remove({ email });
+function deleteUser(id) {
+  return User.remove({ _id: id });
 }
 
 /**

@@ -51,7 +51,7 @@ function fetchNewsItems(res) {
  * @param res
  * @returns {Promise|Promise.<T>}
  */
-function generateData(res) {
+function generateData() {
   return requestPromise({
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/?Category=ScienceAndTechnology', //URL to hit
     method: 'GET', //Specify the method
@@ -66,8 +66,7 @@ function generateData(res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const jsonValues = body.value;
     return NewsItem.collection.insertMany(jsonValues);
-  })
-  .then(insertedValues => res.send(insertedValues));
+  });
 }
 
 export default NewsItem;
