@@ -30,14 +30,13 @@ const User = db.model('User', UserSchema);
 const iterations = 10;
 
 UserSchema.statics.verifyPassword = verifyPassword;
-UserSchema.statics.getAllUsersWithFilter = getAllUsersWithFilter;
 UserSchema.statics.generateData = generateData;
 
 // CRUD
-UserSchema.statics.createUser = createUser;
-UserSchema.statics.getUser = getUser;
-UserSchema.statics.deleteUser = deleteUser;
-UserSchema.statics.updateUser = updateUser;
+UserSchema.statics.createItem = createUser;
+UserSchema.statics.getItems = getUsers;
+UserSchema.statics.deleteItem = deleteUser;
+UserSchema.statics.updateItem = updateUser;
 
 /**
  * Method returning promise to create a new user
@@ -53,15 +52,6 @@ function createUser({ name, email, password }) {
     user.hashedPassword = hash;
     return User.collection.insert(user);
   });
-}
-
-/**
- * Method to get user from database
- * @param email
- * @returns {Query|*}
- */
-function getUser(id) {
-  return User.findOne({ _id: id });
 }
 
 /**
@@ -120,7 +110,7 @@ function generateData(res) {
  * @param res
  * @returns {Promise|Promise.<TResult>}
  */
-function getAllUsersWithFilter(filter = {}) {
+function getUsers(filter = {}) {
     return User.find(filter).exec();
 }
 
