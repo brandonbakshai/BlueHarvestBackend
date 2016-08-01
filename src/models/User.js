@@ -46,7 +46,7 @@ UserSchema.statics.updateUser = updateUser;
  * @param password
  * @returns {Promise|Promise.<TResult>|*}
  */
-function createUser(name, email, password) {
+function createUser({ name, email, password }) {
   let user = { name, email };
   return bcrypt.hash(password, iterations)
   .then((hash) => {
@@ -95,7 +95,7 @@ function deleteUser(email) {
  * @param password
  * @returns {Promise}
  */
-function verifyPassword(email, password) {
+function verifyPassword({ email, password }) {
     return User.findOne({ email }, 'hashedPassword')
     .then(user => bcrypt.compare(password, user.hashedPassword));
 }
