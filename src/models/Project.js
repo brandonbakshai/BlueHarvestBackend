@@ -1,15 +1,18 @@
 'use strict';
 
 import db from './db.js';
-import ModelUtility from './utility';
 
 const Schema = db.Schema;
 const ProjectSchema = new Schema({
-  authors: [{
-    type: Schema.ObjectId,
+  name: {
+    type: String,
+    required: true
+  },
+  authors: {
+    type: [Schema.ObjectId],
     ref: 'User',
     required: true
-  }],
+  },
   bounty:[{
     type: Schema.ObjectId,
     ref: 'Bounty'
@@ -54,15 +57,24 @@ const ProjectSchema = new Schema({
   tags: [String]
 });
 
-ProjectSchema.statics.createProject = ModelUtility.create();
-ProjectSchema.statics.getProject = ModelUtility.get();
-ProjectSchema.statics.updateProject = updateProject;
-ProjectSchema.statics.deleteProject = ModelUtility.delete();
+ProjectSchema.statics.createProject = createProject;
+ProjectSchema.statics.getProject = getProject;
+ProjectSchema.statics.updateStatistics = updateStatistics;
+ProjectSchema.statics.deleteProject = deleteProject;
 
 let Project = db.model('Project', ProjectSchema);
 
+function createProject(project) {
+  const projectToInsert = new Project(project);
+  return projectToInsert.save();
+}
+
+function getProject(filter = {}) {
+  return Project.find(filter);
+}
+
 function updateStatistics(id, { upvotes = 0, downvotes = 0}) {
-  return this.findOne({ _id: id })
+  return Project.findOne({ _id: id })
   .then(project => {
     project.statistics.upvotes += upvotes;
     project.statistics.downvotes += downvotes;
@@ -70,17 +82,13 @@ function updateStatistics(id, { upvotes = 0, downvotes = 0}) {
   });
 }
 
-function updateMedia(id, { images = {}, videos = {}}) {
-  return this.findOne({ _id: id })
-  .then(project => {
-    project.statistics.upvotes += upvotes;
-    project.statistics.downvotes += downvotes;
-    return project.save();
-  });
-}
-
-function updateMeta() {
-
+/**
+ * Returns promise to remove project with given id from collection
+ * @param id
+ * @returns {Promise}
+ */
+function deleteProject(id) {
+  return Project.remove({ _id: id });
 }
 
 export default Project;

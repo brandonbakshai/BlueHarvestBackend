@@ -3,7 +3,6 @@
 import db from './db.js';
 import bcrypt from 'bcrypt-as-promised';
 import isEmail from 'validator/lib/isEmail';
-import ModelUtility from './utility';
 
 const Schema = db.Schema;
 const UserSchema = new Schema({
@@ -34,9 +33,9 @@ UserSchema.statics.getFreshNewsItems = generateData;
 
 // CRUD
 UserSchema.statics.createUser = createUser;
-UserSchema.statics.getUser = ModelUtility.get();
+UserSchema.statics.getUser = getUser;
 UserSchema.statics.updateUser = updateUser;
-UserSchema.statics.deleteUser = ModelUtility.delete();
+UserSchema.statics.deleteUser = deleteUser;
 
 const User = db.model('User', UserSchema);
 
@@ -45,30 +44,50 @@ const User = db.model('User', UserSchema);
  * @param name
  * @param email
  * @param password
- * @returns {Promise|Promise.<TResult>|*}
+ * @returns {Promise}
  */
 function createUser({ name, email, password }) {
   let user = { name, email };
   return bcrypt.hash(password, iterations)
   .then((hash) => {
     user.hashedPassword = hash;
-    return User.collection.insert(user);
+    const userToInsert = new User(user);
+    return userToInsert.save();
   });
 }
 
 /**
+ * Returns promise to get user given a filter object
+ * @param filter
+ * @returns {Query|*|T}
+ */
+function getUser(filter = {}) {
+  return User.find(filter);
+}
+
+/**
  * Method to update user fields given unique email
+ * @param id unique identifier for user to updatet
  * @param email
  * @param name
  * @returns {Promise}
  */
 function updateUser(id, { name, email }) {
-  return User.findOne({ _id: id })
+  return UserSchema.findOne({ _id: id })
   .then(user => {
     user.name = name || user.name;
     user.email = email || user.email;
     return user.save();
   });
+}
+
+/**
+ * Returns promise to remove user with given id from collection
+ * @param id
+ * @returns {Promise}
+ */
+function deleteUser(id) {
+  return User.remove({ _id: id });
 }
 
 /**
@@ -78,8 +97,8 @@ function updateUser(id, { name, email }) {
  * @returns {Promise}
  */
 function verifyPassword({ email, password }) {
-    return User.findOne({ email }, 'hashedPassword')
-    .then(user => bcrypt.compare(password, user.hashedPassword));
+  return User.findOne({ email }, 'hashedPassword')
+  .then(user => bcrypt.compare(password, user.hashedPassword));
 }
 
 /**
