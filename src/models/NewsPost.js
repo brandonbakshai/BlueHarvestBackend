@@ -2,10 +2,27 @@
 
 import db from './db.js';
 import requestPromise from 'request-promise';
-import ModelUtility from './utility';
+import Post from './Post';
+
+const NewsSchema = new Schema({
+  meta: {
+    about: [{
+      name: String,
+      readLink: String
+    }],
+    provider: [{
+      _type: String,
+      name: String
+    }],
+    url: String,
+
+  },
+});
+
+const Project = Post.discriminator('Project', ProjectSchema);
 
 const Schema = db.Schema;
-const NewsItemSchema = new Schema({
+const NewsPostSchema = new Schema({
     about: [{
       name: String,
       readLink: String
@@ -34,21 +51,23 @@ const NewsItemSchema = new Schema({
       downvotes: { type: Number, default: 0 }
     }
 });
-const NewsItem = db.model('NewsItem', NewsItemSchema);
+
+
+const NewsPost = db.model('NewsPost', NewsPostSchema);
 
 // CRUD
-NewsItemSchema.statics.createNewsItem    = ModelUtility.create(NewsItem);
-NewsItemSchema.statics.getNewsItem       = ModelUtility.get(NewsItem);
-NewsItemSchema.statics.deleteNewsItem    = ModelUtility.delete(NewsItem);
-NewsItemSchema.statics.getFreshNewsItems = getFreshNewsItems;
-NewsItemSchema.statics.updateNewsItem    = updateNewsItem;
+NewsPostSchema.statics.createNewsPost    = ModelUtility.create(NewsPost);
+NewsPostSchema.statics.getNewsPost       = ModelUtility.get(NewsPost);
+NewsPostSchema.statics.deleteNewsPost    = ModelUtility.delete(NewsPost);
+NewsPostSchema.statics.getFreshNewsPosts = getFreshNewsPosts;
+NewsPostSchema.statics.updateNewsPost    = updateNewsPost;
 
 /**
- * Method returning promise to query bing news search api and insert data as NewsItem in mongodb instance
+ * Method returning promise to query bing news search api and insert data as NewsPost in mongodb instance
  * @param res
  * @returns {Promise|Promise.<T>}
  */
-function getFreshNewsItems() {
+function getFreshNewsPosts() {
   return requestPromise({
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/?Category=ScienceAndTechnology', //URL to hit
     method: 'GET', //Specify the method
@@ -62,19 +81,19 @@ function getFreshNewsItems() {
   .then((body) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const jsonValues = body.value;
-    return NewsItem.collection.insertMany(jsonValues);
+    return NewsPost.collection.insertMany(jsonValues);
   });
 }
 
 /**
- * Method to update NewsItem social fields given id
- * @param id unique id representative of a NewsItem
+ * Method to update NewsPost social fields given id
+ * @param id unique id representative of a NewsPost
  * @param upvotes number by which to increment the upvotes field
  * @param downvotes number by which to increment the downvotes field
  * @returns {Promise}
  */
-function updateNewsItem(id, { upvotes = 0, downvotes = 0 }) {
-  return NewsItem.findOne({ _id: id })
+function updateNewsPost(id, { upvotes = 0, downvotes = 0 }) {
+  return NewsPost.findOne({ _id: id })
   .then(newsItem => {
     newsItem.social.upvotes += upvotes;
     newsItem.social.downvotes += downvotes;
@@ -82,4 +101,4 @@ function updateNewsItem(id, { upvotes = 0, downvotes = 0 }) {
   });
 }
 
-export default NewsItem;
+export default NewsPost;

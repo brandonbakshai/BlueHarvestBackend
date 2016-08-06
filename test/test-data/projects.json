@@ -1,27 +1,47 @@
 [
   {
-    "name": "one",
-    "tagline": "example tagline one",
-    "description": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    "title": "one",
+    "content": {
+      "text": {
+        "tagline": "example tagline one",
+        "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+      }
+    }
   },
   {
-    "name": "two",
-    "tagline": "example tagline two",
-    "description": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    "title": "two",
+    "content": {
+      "text": {
+        "tagline": "example tagline two",
+        "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+      }
+    }
   },
   {
-    "name": "three",
-    "tagline": "example tagline three",
-    "description": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    "title": "three",
+    "content": {
+      "text": {
+        "tagline": "example tagline three",
+        "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+      }
+    }
   },
   {
-    "name": "four",
-    "tagline": "example tagline four",
-    "description": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    "title": "four",
+    "content": {
+      "text": {
+        "tagline": "example tagline four",
+        "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+      }
+    }
   },
   {
-    "name": "five",
-    "tagline": "example tagline five",
-    "description": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    "title": "five",
+    "content": {
+      "text": {
+        "tagline": "example tagline five",
+        "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+      }
+    }
   }
 ]

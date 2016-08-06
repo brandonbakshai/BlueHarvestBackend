@@ -2,12 +2,14 @@
 
 const UserMethods  = require( '../../src/models/User').default.schema.statics;
 const User         = require( '../../src/models/User').default;
-const expect       = require('chai').expect;
-const assert       = require('assert');
-var describe       = require('mocha').describe;
-const before       = require('mocha').before;
 const usersSuccess = require('../test-data/users').successCases;
 const usersFailure = require('../test-data/users').failureCases;
+
+const expect       = require('chai').expect;
+const assert       = require('assert');
+
+var describe       = require('mocha').describe;
+const before       = require('mocha').before;
 const it           = require('mocha').it;
 
 const numberOfSuccesses = usersSuccess.length;

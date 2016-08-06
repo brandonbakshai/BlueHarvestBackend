@@ -24,19 +24,19 @@ const BountySchema = new Schema({
     required: true
   },
   statistics: {
-    numberOfProjects: {
+    projects: {
       type: Number,
       default: 0
     },
-    numberOfContributors: {
+    contributors: {
       type: Number,
       default: 0
     },
-    numberOfUpvotes: {
+    upvotes: {
       type: Number,
       default: 0
     },
-    numberOfDownvotes: {
+    downvotes: {
       type: Number,
       default: 0
     }

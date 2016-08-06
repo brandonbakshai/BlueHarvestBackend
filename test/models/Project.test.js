@@ -32,7 +32,7 @@ describe('Project', function () {
   });
 
   usersSuccess.forEach(user => {
-    it(`should create and insert ${user.name} to be used for project authors`, function (done) {
+    it(`should create and insert ${user.title} to be used for project authors`, function (done) {
       UserMethods.createUser(user)
       .then(function (insertedUser) {
         done();
@@ -42,13 +42,14 @@ describe('Project', function () {
   });
 
   projects.forEach(project => {
-    it(`should create and insert ${project.name}`, function (done) {
+    it(`should create and insert ${project.title}`, function (done) {
       UserMethods.getUser()
       .then(users => {
-        project.authors = users;
-        ProjectMethods.createProject(project)
+        const meta = { authors: users, dateCreated: Date.now() };
+        project.meta = meta;
+        return ProjectMethods.createProject(project)
       })
-      .then(function (res) {
+      .then(function (project) {
         done();
       })
       .catch(err => done(err));
