@@ -1,18 +1,20 @@
 'use strict';
 
-function createGeneral(Model) {
-  return (item) => Model.collection.insert(item);
+function createGeneral() {
+  return (item) => this.collection.insert(item);
 }
-function getGeneral(Model) {
-  return (filter = {}) => Model.find(filter).exec();
-}
-
-function updateGeneral(Model) {
-  return (id, item) => find({ _id: id }).
-
-
+function getGeneral() {
+  return (filter = {}) => this.find(filter).exec();
 }
 
-function deleteGeneral(Model) {
-  return (id) => Model.remove({ _id: id });
+function deleteGeneral() {
+  return (id) => this.remove({ _id: id });
 }
+
+const ModelFunctions = {
+  create: createGeneral,
+  get: getGeneral,
+  delete: deleteGeneral
+}
+
+export default ModelFunctions;

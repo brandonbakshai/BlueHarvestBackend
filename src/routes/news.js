@@ -12,9 +12,8 @@ router.get('/', (req, res) => {
 });
 
 router.get('/live', (req, res) => {
-  NewsItem.generateData(res)
+  NewsItem.getFreshNewsItems(res)
     .then(insertedValues => res.send(insertedValues))
-    .then(result => console.log("success"))
     .catch(err => console.log(err));
 });
 

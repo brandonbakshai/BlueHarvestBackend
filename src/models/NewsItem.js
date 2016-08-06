@@ -2,6 +2,7 @@
 
 import db from './db.js';
 import requestPromise from 'request-promise';
+import ModelUtility from './utility';
 
 const Schema = db.Schema;
 const NewsItemSchema = new Schema({
@@ -27,31 +28,27 @@ const NewsItemSchema = new Schema({
       _type: String,
       name: String
     }],
-    url: String
+    url: String,
+    social: {
+      upvotes: { type: Number, default: 0 },
+      downvotes: { type: Number, default: 0 }
+    }
 });
-
-NewsItemSchema.statics.fetchNewsItems = fetchNewsItems;
-NewsItemSchema.statics.generateData = generateData;
-
 const NewsItem = db.model('NewsItem', NewsItemSchema);
 
-/**
- * Method returning promise to get NewsItems and serve back to client
- * @param res
- * @returns {Promise|Promise.<T>}
- */
-function fetchNewsItems(res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  return NewsItem.find()
-    .then(result => res.send(result));
-}
+// CRUD
+NewsItemSchema.statics.createNewsItem    = ModelUtility.create(NewsItem);
+NewsItemSchema.statics.getNewsItem       = ModelUtility.get(NewsItem);
+NewsItemSchema.statics.deleteNewsItem    = ModelUtility.delete(NewsItem);
+NewsItemSchema.statics.getFreshNewsItems = getFreshNewsItems;
+NewsItemSchema.statics.updateNewsItem    = updateNewsItem;
 
 /**
  * Method returning promise to query bing news search api and insert data as NewsItem in mongodb instance
  * @param res
  * @returns {Promise|Promise.<T>}
  */
-function generateData() {
+function getFreshNewsItems() {
   return requestPromise({
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/?Category=ScienceAndTechnology', //URL to hit
     method: 'GET', //Specify the method
@@ -66,6 +63,22 @@ function generateData() {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const jsonValues = body.value;
     return NewsItem.collection.insertMany(jsonValues);
+  });
+}
+
+/**
+ * Method to update NewsItem social fields given id
+ * @param id unique id representative of a NewsItem
+ * @param upvotes number by which to increment the upvotes field
+ * @param downvotes number by which to increment the downvotes field
+ * @returns {Promise}
+ */
+function updateNewsItem(id, { upvotes = 0, downvotes = 0 }) {
+  return NewsItem.findOne({ _id: id })
+  .then(newsItem => {
+    newsItem.social.upvotes += upvotes;
+    newsItem.social.downvotes += downvotes;
+    return newsItem.save();
   });
 }
 
