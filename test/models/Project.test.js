@@ -1,8 +1,9 @@
 'use strict';
 
-const ProjectMethods = require( '../../src/models/Project').default.schema.statics;
-const Project        = require( '../../src/models/Project').default;
-const projects       = require('../test-data/projects');
+const ProjectMethods  = require( '../../src/models/Project').default.schema.statics;
+const Project         = require( '../../src/models/Project').default;
+const projectsSuccess = require('../test-data/projects').successCases;
+const projectsFailure = require('../test-data/projects').failureCases;
 
 const UserMethods = require( '../../src/models/User').default.schema.statics;
 const User        = require( '../../src/models/User').default;
@@ -15,7 +16,7 @@ const before      = require('mocha').before;
 const describe       = require('mocha').describe;
 const it            = require('mocha').it;
 
-const numberOfProjects = projects.length;
+const numberOfProjects = projectsSuccess.length;
 
 describe('Project', function () {
   before(function (done) {
@@ -41,11 +42,13 @@ describe('Project', function () {
     });
   });
 
-  projects.forEach(project => {
+  projectsSuccess.forEach(project => {
     it(`should create and insert ${project.title}`, function (done) {
       UserMethods.getUser()
       .then(users => {
-        const meta = { authors: users, dateCreated: Date.now() };
+        const meta = project.meta || {};
+        meta.authors = users;
+        meta.dateCreated = Date.now();
         project.meta = meta;
         return ProjectMethods.createProject(project)
       })

@@ -15,7 +15,8 @@ const PostSchema = new Schema({
         required: true
       }
     },
-    media: [{
+    media: [
+      {
         description: String,
         typeOfMedia: {
           type: String,
@@ -31,11 +32,6 @@ const PostSchema = new Schema({
     dateCreated: {
       type: Date,
       required: true
-    },
-    authors: {
-      type: [Schema.ObjectId],
-      ref: 'User',
-      required: true, // TODO add length validation
     },
     contributors: {
       type: Number,

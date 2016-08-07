@@ -1,7 +1,7 @@
 'use strict';
 
 import express from 'express';
-import NewsItem from '../models/NewsPost';
+import NewsItem from '../models/News';
 
 const router = express.Router();
 

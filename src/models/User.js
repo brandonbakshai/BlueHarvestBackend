@@ -31,7 +31,6 @@ const iterations = 10;
 UserSchema.statics.verifyPassword    = verifyPassword;
 UserSchema.statics.getFreshNewsItems = generateData;
 
-// CRUD
 UserSchema.statics.createUser = createUser;
 UserSchema.statics.getUser = getUser;
 UserSchema.statics.updateUser = updateUser;

@@ -5,20 +5,17 @@ import Post from './Post';
 
 const Schema = db.Schema;
 const ProjectSchema = new Schema({
-  content: {
-    text: {
-      tagline: {
-        type: String,
-        required: true
-      }
-    }
-  },
   media: {
     gitUrl: {
       type: String
     }
   },
   meta: {
+    authors: {
+      type: [Schema.ObjectId],
+      ref: 'User',
+      required: true, // TODO add length validation
+    },
     bounty:[{
       type: Schema.ObjectId,
       ref: 'Bounty'

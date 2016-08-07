@@ -1,11 +1,14 @@
 {
   "successCases": [
     {
-      "title": "one",
+      "title": "woman gains power to fly",
       "content": {
         "text": {
           "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
         }
+      },
+      "meta": {
+        "url": "https://www.google.com"
       }
     },
     {
@@ -14,6 +17,9 @@
         "text": {
           "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
         }
+      },
+      "meta": {
+        "url": "https://www.google.com"
       }
     },
     {
@@ -22,6 +28,9 @@
         "text": {
           "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
         }
+      },
+      "meta": {
+        "url": "https://www.google.com"
       }
     },
     {
@@ -30,6 +39,9 @@
         "text": {
           "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
         }
+      },
+      "meta": {
+        "url": "https://www.google.com"
       }
     },
     {
@@ -38,7 +50,18 @@
         "text": {
           "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
         }
+      },
+      "meta": {
+        "url": "https://www.google.com"
       }
     }],
-  "failureCases": []
+  "failureCases": [
+    {
+      "title": "one",
+      "content": {
+        "text": {
+          "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+        }
+      }
+    }]
 }
