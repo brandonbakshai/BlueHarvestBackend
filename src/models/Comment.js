@@ -6,10 +6,10 @@ import Post from './Post';
 // TODO: make a separate Url model and embed that in every model, so in a post at the bottom it will show all the referenced links and pictures of their front pages etc.
 const Schema = db.Schema;
 const CommentSchema = new Schema({
-  thread: {
+  parent: {
     type:     Schema.ObjectId,
     ref:      'Public',
-    required: true,
+    required: true
   }
 });
 
@@ -26,15 +26,6 @@ function createComment(comment) {
 
 function getComment(filter = {}) {
   return Comment.find(filter);
-}
-
-function updateVotes(id, { upvotes = 0, downvotes = 0}) {
-  return Comment.findOne({ _id: id })
-  .then(comment => {
-    comment.meta.upvotes += upvotes;
-    comment.meta.downvotes += downvotes;
-    return comment.save();
-  });
 }
 
 function updateBody(id, { body }) {

@@ -5,8 +5,9 @@ const Bounty = require( '../../src/models/Bounty').default;
 const bountiesSuccess = require('../test-data/bounties').successCases;
 const bountiesFailure = require('../test-data/bounties').failureCases;
 
-const expect      = require('chai').expect;
-const assert      = require('assert');
+const expect = require('chai').expect;
+const assert = require('assert');
+var mongoose = require('mongoose');
 
 const before      = require('mocha').before;
 const describe       = require('mocha').describe;
@@ -31,6 +32,7 @@ describe('Bounty', function () {
       const meta = bounty.meta || {};
       meta.dateCreated = Date.now();
       bounty.meta = meta;
+      bounty.author = mongoose.Types.ObjectId();
       return BountyMethods.createBounty(bounty)
       .then(bounty => done())
       .catch(err => done(err));

@@ -1,6 +1,7 @@
 'use strict';
 
 import db from './db.js';
+import Post from './Post';
 
 const Schema = db.Schema;
 const BountySchema = new Schema({
@@ -10,7 +11,7 @@ const BountySchema = new Schema({
   },
   projects: {
     type:     [Schema.ObjectId],
-    ref:      'Project',
+    ref:      'Project'
   },
   meta: {
     views: {
@@ -25,7 +26,7 @@ BountySchema.statics.createBounty = createBounty;
 BountySchema.statics.getBounty = getBounty;
 BountySchema.statics.addProjects = addProjects;
 
-let Bounty = db.model('Bounty', BountySchema);
+const Bounty = Post.discriminator('Bounty', BountySchema);
 
 function createBounty(bounty) {
   const bountyToInsert = new Bounty(bounty);
