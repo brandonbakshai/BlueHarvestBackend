@@ -3,7 +3,11 @@
 import db from './db.js';
 
 const Schema = db.Schema;
-const PostSchema = new Schema({
+const PublicSchema = new Schema({
+  title: {
+    type:     String,
+    required: true
+  },
   author: {
     type: Schema.ObjectId,
     ref: 'User',
@@ -13,7 +17,34 @@ const PostSchema = new Schema({
     type:     String,
     required: true
   },
+  thumbnail: {
+    contentUrl:  String,
+    height:      Number,
+    width:       Number
+  },
+  media: [
+    {
+      typeOfMedia: {
+        type:     String,
+        enum:     ['video', 'image', 'audio', 'urls'],
+        required: true
+      },
+      contentUrl:  String,
+      height:      Number,
+      width:       Number
+    }],
+  urls: [{
+      description: String,
+      url: {
+        type: String,
+        required: true
+      }
+  }],
   meta: {
+    views: {
+      type: Number,
+      default: 0
+    },
     dateCreated: {
       type: Date,
       required: true
@@ -25,14 +56,15 @@ const PostSchema = new Schema({
     downvotes: {
       type: Number,
       default: 0
-    }
+    },
+    tags: [String]
   }
 });
 
-PostSchema.statics.updateVotes = updateVotes;
-PostSchema.statics.deletePost = deletePost;
+PublicSchema.statics.updateVotes = updateVotes;
+PublicSchema.statics.deletePost = deletePost;
 
-const Post = db.model('Post', PostSchema);
+const Public = db.model('Public', PublicSchema);
 
 function updateVotes(id, { upvotes = 0, downvotes = 0}) {
   return Post.findOne({ _id: id })
@@ -52,5 +84,4 @@ function deletePost(id) {
   return Post.remove({ _id: id });
 }
 
-export default Post;
-
+export default Public;

@@ -5,12 +5,10 @@ const Project         = require( '../../src/models/Project').default;
 const projectsSuccess = require('../test-data/projects').successCases;
 const projectsFailure = require('../test-data/projects').failureCases;
 
-const UserMethods = require( '../../src/models/User').default.schema.statics;
-const User        = require( '../../src/models/User').default;
-const usersSuccess      = require('../test-data/users').successCases;
+const expect = require('chai').expect;
+const assert = require('assert');
 
-const expect      = require('chai').expect;
-const assert      = require('assert');
+var mongoose = require('mongoose');
 
 const before      = require('mocha').before;
 const describe       = require('mocha').describe;
@@ -23,38 +21,20 @@ describe('Project', function () {
     Project.remove({})
     .then(() => {
       console.log('Project collection wiped');
-      return User.remove({})
-    })
-    .then(() => {
-      console.log('User collection wiped');
       done();
     })
     .catch(err => done(err));
   });
 
-  usersSuccess.forEach(user => {
-    it(`should create and insert ${user.title} to be used for project authors`, function (done) {
-      UserMethods.createUser(user)
-      .then(function (insertedUser) {
-        done();
-      })
-      .catch(err => done(err));
-    });
-  });
-
   projectsSuccess.forEach(project => {
     it(`should create and insert ${project.title}`, function (done) {
-      UserMethods.getUser()
-      .then(users => {
-        const meta = project.meta || {};
-        meta.authors = users;
-        meta.dateCreated = Date.now();
-        project.meta = meta;
-        return ProjectMethods.createProject(project)
-      })
-      .then(function (project) {
-        done();
-      })
+      const meta = project.meta || {};
+      meta.dateCreated = Date.now();
+      project.meta = meta;
+      project.author = mongoose.Types.ObjectId();
+      project.bounty = mongoose.Types.ObjectId();
+      ProjectMethods.createProject(project)
+      .then(project => done())
       .catch(err => done(err));
     });
   });

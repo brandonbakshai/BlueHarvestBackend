@@ -1,0 +1,30 @@
+{
+  "successCases": [
+    {
+      "title": "story one",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "url": "https://www.google.com"
+    },
+    {
+      "title": "story two",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "url": "https://www.google.com"
+    },
+    {
+      "title": "story three",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "url": "https://www.google.com"
+    },
+    {
+      "title": "story four",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "url": "https://www.google.com"
+    },
+    {
+      "title": "story five",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "url": "https://www.google.com"
+    }],
+  "failureCases": []
+}
+

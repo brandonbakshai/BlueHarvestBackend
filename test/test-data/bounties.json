@@ -1,16 +1,25 @@
 {
-  authors: [
-    'Brandon',
-    'Tiffany'
-  ],
-  projects: [{ type: Schema.ObjectId, ref: 'Project' }],
-  tagline: String,
-  description: String,
-  statistics: {
-    numberOfProjects: {type: Number, default: 0},
-    numberOfContributors: {type: Number, default: 0},
-    numberOfUpvotes: {type: Number, default: 0},
-    numberOfDownvotes: {type: Number, default: 0}
-  }
+  "successCases": [
+    {
+      "title": "bounty one",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    },
+    {
+      "title": "bounty two",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    },
+    {
+      "title": "bounty three",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    },
+    {
+      "title": "bounty four",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    },
+    {
+      "title": "bounty five",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing."
+    }],
+  "failureCases": []
 }
 
