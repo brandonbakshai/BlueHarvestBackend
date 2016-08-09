@@ -8,40 +8,41 @@ const router = express.Router();
 
 router.route('/')
   .get(getAllUsers)
-  .post(createUser)
+  .post(createUser);
 
-  .get(':user_id', getUser)
-  .put(':user_id', updateUser)
-  .delete(':user_id', deleteUser);
+router.route('/:user_id')
+  .get(getUser)
+  .put(updateUser)
+  .delete(deleteUser);
 
 function getAllUsers(res) {
-  User.getAllUsersWithFilter()
+  User.getUser()
   .then(users => res.send(users))
-  .catch(errorHandler);
+  .catch(err => errorHandler(err, res));
 }
 
 function createUser(req, res) {
   User.createUser(req.body)
   .then(user => res.send(user))
-  .catch(errorHandler);
+  .catch(err => errorHandler(err, res));
 }
 
 function getUser(req, res) {
   User.getUser(req.params.user_id)
   .then(user => res.send(user))
-  .catch(errorHandler);
+  .catch(err => errorHandler(err, res));
 }
 
 function updateUser(req, res) {
   User.updateUser(req.body)
   .then(user => res.send(user))
-  .catch(errorHandler);
+  .catch(err => errorHandler(err, res));
 }
 
 function deleteUser(req, res) {
   User.deleteUser(req.params.user_id)
   .then(() => res.send('success'))
-  .catch(errorHandler);
+  .catch(err => errorHandler(err, res));
 }
 
 export default router;

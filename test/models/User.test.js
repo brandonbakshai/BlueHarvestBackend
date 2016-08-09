@@ -67,7 +67,7 @@ describe('User', function () {
     it(`should fail on attempted insertion of ${user.name}`, function (done) {
       UserMethods.createUser(user)
       .then((insertedUser) => {
-        assert.fail(error);
+        assert.fail();
         done();
       })
       .catch(err => done());

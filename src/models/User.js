@@ -3,18 +3,20 @@
 import db from './db.js';
 import bcrypt from 'bcrypt-as-promised';
 import isEmail from 'validator/lib/isEmail';
+import uniqueValidator from 'mongoose-unique-validator';
 
 const Schema = db.Schema;
 const UserSchema = new Schema({
   name: { type: String, required: true },
   email: {
     type: String,
-    required: true,
-    unique: true,
-    validate: {
-      validator: isEmail,
-      message: 'Our scientists tell us {VALUE} is not a valid email address'
-    },
+    required: 'An email is required',
+    validate: [
+      {
+        validator: isEmail,
+        message: 'Our scientists tell us {VALUE} is not a valid email address'
+      }],
+    unique: true
   },
   hashedPassword: { type: String, required: true },
   bounties: {
@@ -26,6 +28,7 @@ const UserSchema = new Schema({
     contributed: [{ type: Schema.ObjectId, ref: 'Project' }]
   }
 });
+UserSchema.plugin(uniqueValidator);
 const iterations = 10;
 
 UserSchema.statics.verifyPassword    = verifyPassword;
@@ -112,6 +115,10 @@ function generateData(res) {
 
   return createUser({ name, email, password })
   .then(data => res.send(data));
+}
+
+function isUnique(email) {
+  User.findOne({ email }).then(result => result == null);
 }
 
 export default User;
