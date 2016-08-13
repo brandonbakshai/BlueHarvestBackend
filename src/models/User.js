@@ -54,6 +54,7 @@ function createUser({ name, email, password }) {
   .then((hash) => {
     user.hashedPassword = hash;
     const userToInsert = new User(user);
+    // console.log(userToInsert);
     return userToInsert.save();
   });
 }
@@ -115,10 +116,6 @@ function generateData(res) {
 
   return createUser({ name, email, password })
   .then(data => res.send(data));
-}
-
-function isUnique(email) {
-  User.findOne({ email }).then(result => result == null);
 }
 
 export default User;

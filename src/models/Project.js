@@ -7,8 +7,7 @@ const Schema = db.Schema;
 const ProjectSchema = new Schema({
   bounty: {
     type:     Schema.ObjectId,
-    ref:      'Bounty',
-    required: true,
+    ref:      'Bounty'
   }
 });
 

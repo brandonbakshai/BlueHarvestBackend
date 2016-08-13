@@ -15,34 +15,34 @@ router.route('/:user_id')
   .put(updateUser)
   .delete(deleteUser);
 
-function getAllUsers(res) {
+function getAllUsers(req, res) {
   User.getUser()
   .then(users => res.send(users))
-  .catch(err => errorHandler(err, res));
+  .catch(errorHandler);
 }
 
 function createUser(req, res) {
   User.createUser(req.body)
   .then(user => res.send(user))
-  .catch(err => errorHandler(err, res));
+  .catch(err => res.send(err));
 }
 
 function getUser(req, res) {
-  User.getUser(req.params.user_id)
+  User.getUser({ _id: req.params.user_id })
   .then(user => res.send(user))
-  .catch(err => errorHandler(err, res));
+  .catch(errorHandler);
 }
 
 function updateUser(req, res) {
   User.updateUser(req.body)
   .then(user => res.send(user))
-  .catch(err => errorHandler(err, res));
+  .catch(errorHandler);
 }
 
 function deleteUser(req, res) {
   User.deleteUser(req.params.user_id)
   .then(() => res.send('success'))
-  .catch(err => errorHandler(err, res));
+  .catch(errorHandler);
 }
 
 export default router;

@@ -8,8 +8,8 @@ const PublicSchema = new Schema({
     type:     String,
     required: true
   },
-  author: {
-    type: Schema.ObjectId,
+  authors: {
+    type: [Schema.ObjectId],
     ref: 'User',
     required: true,
   },
@@ -26,7 +26,7 @@ const PublicSchema = new Schema({
     {
       typeOfMedia: {
         type:     String,
-        enum:     ['video', 'image', 'audio', 'urls'],
+        enum:     ['video', 'image', 'audio'],
         required: true
       },
       contentUrl:  String,

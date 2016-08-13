@@ -31,7 +31,7 @@ describe('Thread', function () {
       const meta = thread.meta || {};
       meta.dateCreated = Date.now();
       thread.meta = meta;
-      thread.author = mongoose.Types.ObjectId();
+      thread.authors = [mongoose.Types.ObjectId()];
       ThreadMethods.createThread(thread)
       .then(thread => done())
       .catch(err => done(err));

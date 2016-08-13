@@ -31,7 +31,7 @@ describe('Project', function () {
       const meta = project.meta || {};
       meta.dateCreated = Date.now();
       project.meta = meta;
-      project.author = mongoose.Types.ObjectId();
+      project.authors = [mongoose.Types.ObjectId()];
       project.bounty = mongoose.Types.ObjectId();
       ProjectMethods.createProject(project)
       .then(project => done())

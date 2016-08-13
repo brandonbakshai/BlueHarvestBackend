@@ -11,20 +11,27 @@ const BountySchema = new Schema({
   },
   projects: {
     type:     [Schema.ObjectId],
-    ref:      'Project'
+    ref:      'Project',
+    default: []
   },
   meta: {
     views: {
       type: Number,
       default: 0
     },
-    tags: [String]
+    tags: {
+      type: [String],
+      default: []
+    }
   }
 });
 
 BountySchema.statics.createBounty = createBounty;
 BountySchema.statics.getBounty = getBounty;
 BountySchema.statics.addProjects = addProjects;
+BountySchema.statics.removeProjects = removeProjects;
+BountySchema.statics.incrementViews = incrementViews;
+BountySchema.statics.updateTags = updateTags;
 
 const Bounty = Post.discriminator('Bounty', BountySchema);
 
@@ -38,11 +45,36 @@ function getBounty(filter = {}) {
 }
 
 function addProjects(id, projects = []) {
-  const updatedProjectSet = new Set(projects);
   return Bounty.findOne({ _id: id })
   .then(bounty => {
-    const oldProjectSet = new Set(bounty.projects);
-    bounty.projects = new Set([oldProjectSet, updatedProjectSet]) || bounty.projects;
+    const combinedProjectSet = new Set([...projects, ...bounty.projects]);
+    bounty.projects =  [...combinedProjectSet];
+    return bounty.save();
+  });
+}
+
+function removeProjects(id, projects = []) {
+  let projectSet = new Set(projects.map(x => x.toString()));
+  return Bounty.findOne({ _id: id })
+  .then(bounty => {
+    bounty.projects = [...bounty.projects].filter(x => !projectSet.has(x.toString()));
+    return bounty.save();
+  });
+}
+
+function incrementViews(id) {
+  return Bounty.findOne({ _id: id })
+  .then(bounty => {
+    const currentViews = bounty.meta.views || 0;
+    bounty.meta.views = currentViews + 1;
+    return bounty.save();
+  });
+}
+
+function updateTags(id, tags) {
+  return Bounty.findOne({ _id: id })
+  .then(bounty => {
+    bounty.meta.tags = tags;
     return bounty.save();
   });
 }

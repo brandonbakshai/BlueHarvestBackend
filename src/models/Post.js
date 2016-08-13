@@ -4,8 +4,8 @@ import db from './db.js';
 
 const Schema = db.Schema;
 const PostSchema = new Schema({
-  author: {
-    type: Schema.ObjectId,
+  authors: {
+    type: [Schema.ObjectId],
     ref: 'User',
     required: true,
   },

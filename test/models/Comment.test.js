@@ -33,7 +33,7 @@ describe('Comment', function () {
       meta.dateCreated = Date.now();
       comment.meta = meta;
       comment.parent = mongoose.Types.ObjectId();
-      comment.author = mongoose.Types.ObjectId();
+      comment.authors = [mongoose.Types.ObjectId()];
       return CommentMethods.createComment(comment)
       .then(comment => done())
       .catch(err => done(err));

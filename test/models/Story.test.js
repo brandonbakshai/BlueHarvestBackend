@@ -31,7 +31,7 @@ describe('Story', function () {
       const meta = story.meta || {};
       meta.dateCreated = Date.now();
       story.meta = meta;
-      story.author = mongoose.Types.ObjectId();
+      story.authors = [mongoose.Types.ObjectId()];
       StoryMethods.createStory(story)
       .then(story => done())
       .catch(err => done(err));
