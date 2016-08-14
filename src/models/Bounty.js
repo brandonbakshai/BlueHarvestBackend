@@ -2,6 +2,7 @@
 
 import db from './db.js';
 import Post from './Post';
+import mongoose from 'mongoose';
 
 const Schema = db.Schema;
 const BountySchema = new Schema({
@@ -47,8 +48,12 @@ function getBounty(filter = {}) {
 function addProjects(id, projects = []) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
-    const combinedProjectSet = new Set([...projects, ...bounty.projects]);
-    bounty.projects =  [...combinedProjectSet];
+    const oldProjects = bounty.projects.map(project => project.toString());
+    const combinedProjectSet = new Set([...oldProjects, ...projects]);
+    console.log(combinedProjectSet);
+    const updatedProjects = [];
+    combinedProjectSet.forEach(updatedProjects.)
+    bounty.projects =  [...updatedProjects];
     return bounty.save();
   });
 }
