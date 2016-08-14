@@ -87,6 +87,21 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
+  it(`addProjects should add the same project to the projects field of a bounty with no effect`, function (done) {
+    // get bounty with title "bounty one"
+    BountyMethods.getBounty({ title: "bounty one"})
+    .then(bounties => {
+      const bounty = bounties[0];
+      expect(bounty.projects.length).to.eql(1);
+      return BountyMethods.addProjects(bounty._id, bounty.projects);
+    })
+    .then(bounty => {
+      expect(bounty.projects.length).to.eql(1);
+      done();
+    })
+    .catch(err => done(err));
+  });
+
   /* removeProjects */
 
   it(`removeProjects should successfully remove a project from the projects field of a bounty`, function (done) {
@@ -148,7 +163,12 @@ function checkEquality(one, two) {
   if (one.length !== two.length) return false;
 
   for (let i = 0; i < one.length; i++) {
-    if (one[i] !== two[i]) return false;
+    if (one[i] !== two[i]) {
+      console.log(one[i] == two[i]);
+      console.log(one[i]);
+      console.log(two[i]);
+      return false;
+    }
   }
 
   return true;

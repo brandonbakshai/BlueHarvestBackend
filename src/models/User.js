@@ -54,7 +54,6 @@ function createUser({ name, email, password }) {
   .then((hash) => {
     user.hashedPassword = hash;
     const userToInsert = new User(user);
-    // console.log(userToInsert);
     return userToInsert.save();
   });
 }
