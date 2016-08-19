@@ -2,6 +2,7 @@
 
 import db from './db.js';
 import Post from './Post';
+import CustomSet from '../util/CustomSet';
 import mongoose from 'mongoose';
 
 const Schema = db.Schema;
@@ -48,21 +49,25 @@ function getBounty(filter = {}) {
 function addProjects(id, projects = []) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
-    const oldProjects = bounty.projects.map(project => project.toString());
-    const combinedProjectSet = new Set([...oldProjects, ...projects]);
-    console.log(combinedProjectSet);
-    const updatedProjects = [];
-    combinedProjectSet.forEach(updatedProjects.)
-    bounty.projects =  [...updatedProjects];
+    const projectSet = new CustomSet();
+
+    projectSet.add(bounty.projects);
+    projectSet.add(projects);
+    bounty.projects =  [...projectSet];
+
     return bounty.save();
   });
 }
 
 function removeProjects(id, projects = []) {
-  let projectSet = new Set(projects.map(x => x.toString()));
   return Bounty.findOne({ _id: id })
   .then(bounty => {
-    bounty.projects = [...bounty.projects].filter(x => !projectSet.has(x.toString()));
+    const projectSet = new CustomSet();
+
+    projectSet.add(bounty.projects);
+    projectSet.delete(projects);
+    bounty.projects = [...projectSet];
+
     return bounty.save();
   });
 }

@@ -75,7 +75,7 @@ function getUser(filter = {}) {
  * @returns {Promise}
  */
 function updateUser(id, { name, email }) {
-  return UserSchema.findOne({ _id: id })
+  return User.findOne({ _id: id })
   .then(user => {
     user.name = name || user.name;
     user.email = email || user.email;

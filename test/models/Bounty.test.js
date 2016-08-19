@@ -7,7 +7,8 @@ const bountiesFailure = require('../test-data/bounties').failureCases;
 
 const expect = require('chai').expect;
 const assert = require('assert');
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const CustomSet = require('../../src/util/CustomSet').default;
 
 const before      = require('mocha').before;
 const describe       = require('mocha').describe;
@@ -71,17 +72,20 @@ describe('Bounty', function () {
 
   it(`addProjects should successfully add one project to the projects field of a bounty`, function (done) {
     const project = mongoose.Types.ObjectId();
-    const projects = [project];
+    const projectSet = new CustomSet();
+    projectSet.add(project);
 
     // get bounty with title "bounty one"
     BountyMethods.getBounty({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.projects.length).to.eql(0);
-      return BountyMethods.addProjects(bounty._id, projects);
+      return BountyMethods.addProjects(bounty._id, [project]);
     })
     .then(bounty => {
-      assert(checkEquality(bounty.projects, projects));
+      const existingProjects = new CustomSet();
+      existingProjects.add(bounty.projects);
+      assert(existingProjects.equals(projectSet));
       done();
     })
     .catch(err => done(err));
@@ -163,10 +167,10 @@ function checkEquality(one, two) {
   if (one.length !== two.length) return false;
 
   for (let i = 0; i < one.length; i++) {
-    if (one[i] !== two[i]) {
-      console.log(one[i] == two[i]);
-      console.log(one[i]);
-      console.log(two[i]);
+    if (one[i] != two[i]) {
+      // console.log(one[i] == two[i]);
+      // console.log(one[i]);
+      // console.log(two[i]);
       return false;
     }
   }

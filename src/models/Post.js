@@ -29,16 +29,24 @@ const PostSchema = new Schema({
   }
 });
 
-PostSchema.statics.updateVotes = updateVotes;
+PostSchema.statics.upvote = upvote;
+PostSchema.statics.downvote = downvote;
 PostSchema.statics.deletePost = deletePost;
 
 const Post = db.model('Post', PostSchema);
 
-function updateVotes(id, { upvotes = 0, downvotes = 0}) {
+function upvote(id) {
   return Post.findOne({ _id: id })
   .then(post => {
-    post.meta.upvotes += upvotes;
-    post.meta.downvotes += downvotes;
+    post.meta.upvotes.$inc();
+    return post.save();
+  });
+}
+
+function downvote(id) {
+  return Post.findOne({ _id: id })
+  .then(post => {
+    post.meta.downvotes.$inc();
     return post.save();
   });
 }

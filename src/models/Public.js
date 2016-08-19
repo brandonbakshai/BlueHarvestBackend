@@ -61,16 +61,24 @@ const PublicSchema = new Schema({
   }
 });
 
-PublicSchema.statics.updateVotes = updateVotes;
+PublicSchema.statics.upvote = upvote;
+PublicSchema.statics.downvote = downvote;
 PublicSchema.statics.deletePost = deletePost;
 
 const Public = db.model('Public', PublicSchema);
 
-function updateVotes(id, { upvotes = 0, downvotes = 0}) {
-  return Post.findOne({ _id: id })
+function upvote(id) {
+  return Public.findOne({ _id: id })
   .then(post => {
-    post.meta.upvotes += upvotes;
-    post.meta.downvotes += downvotes;
+    post.meta.upvotes.$inc();
+    return post.save();
+  });
+}
+
+function downvote(id) {
+  return Public.findOne({ _id: id })
+  .then(post => {
+    post.meta.downvotes.$inc();
     return post.save();
   });
 }
@@ -81,7 +89,7 @@ function updateVotes(id, { upvotes = 0, downvotes = 0}) {
  * @returns {Promise}
  */
 function deletePost(id) {
-  return Post.remove({ _id: id });
+  return Public.remove({ _id: id });
 }
 
 export default Public;

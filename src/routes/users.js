@@ -34,7 +34,7 @@ function getUser(req, res) {
 }
 
 function updateUser(req, res) {
-  User.updateUser(req.body)
+  User.updateUser(req.params.user_id, req.body)
   .then(user => res.send(user))
   .catch(errorHandler);
 }
