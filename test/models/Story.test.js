@@ -28,9 +28,6 @@ describe('Story', function () {
 
   storiesSuccess.forEach(story => {
     it(`should create and insert ${story.title}`, function (done) {
-      const meta = story.meta || {};
-      meta.dateCreated = Date.now();
-      story.meta = meta;
       story.authors = [mongoose.Types.ObjectId()];
       StoryMethods.createItem(story)
       .then(story => done())

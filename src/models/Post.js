@@ -14,10 +14,6 @@ const PostSchema = new Schema({
     required: true
   },
   meta: {
-    dateCreated: {
-      type: Date,
-      required: true
-    },
     upvotes: {
       type: Number,
       default: 0
@@ -27,7 +23,11 @@ const PostSchema = new Schema({
       default: 0
     }
   }
-});
+},
+  {
+    timestamps: true
+  }
+);
 
 // update
 PostSchema.statics.upvote = upvote;

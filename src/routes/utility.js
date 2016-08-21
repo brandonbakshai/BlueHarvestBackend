@@ -22,7 +22,7 @@ function getAllHelper(req, res, collection) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   const coll = db.connection.collections[collection].collection;
-  coll.getItems()
+  coll.getItems(req.body)
   .then(items => res.send(items))
   .catch(err => res.send(err));
 }

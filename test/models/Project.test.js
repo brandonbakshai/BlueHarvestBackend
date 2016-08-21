@@ -10,9 +10,9 @@ const assert = require('assert');
 
 var mongoose = require('mongoose');
 
-const before      = require('mocha').before;
-const describe       = require('mocha').describe;
-const it            = require('mocha').it;
+const before = require('mocha').before;
+const describe = require('mocha').describe;
+const it = require('mocha').it;
 
 const numberOfProjects = projectsSuccess.length;
 
@@ -28,9 +28,6 @@ describe('Project', function () {
 
   projectsSuccess.forEach(project => {
     it(`should create and insert ${project.title}`, function (done) {
-      const meta = project.meta || {};
-      meta.dateCreated = Date.now();
-      project.meta = meta;
       project.authors = [mongoose.Types.ObjectId()];
       project.bounty = mongoose.Types.ObjectId();
       ProjectMethods.createItem(project)

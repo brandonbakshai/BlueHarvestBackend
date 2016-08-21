@@ -1,7 +1,7 @@
 'use strict';
 
-const BountyMethods  = require( '../../src/models/Bounty').default.schema.statics;
 const Bounty = require( '../../src/models/Bounty').default;
+const BountyMethods  = Bounty.schema.statics;
 const bountiesSuccess = require('../test-data/bounties').successCases;
 const bountiesFailure = require('../test-data/bounties').failureCases;
 
@@ -10,9 +10,9 @@ const assert = require('assert');
 const mongoose = require('mongoose');
 const CustomSet = require('../../src/util/CustomSet').default;
 
-const before      = require('mocha').before;
-const describe       = require('mocha').describe;
-const it            = require('mocha').it;
+const before = require('mocha').before;
+const describe = require('mocha').describe;
+const it = require('mocha').it;
 
 const numberOfBounties = bountiesSuccess.length;
 
@@ -32,9 +32,6 @@ describe('Bounty', function () {
 
   bountiesSuccess.forEach(bounty => {
     it(`should create and insert ${bounty.title}`, function (done) {
-      const meta = bounty.meta || {};
-      meta.dateCreated = Date.now();
-      bounty.meta = meta;
       bounty.authors = [mongoose.Types.ObjectId()];
       return BountyMethods.createItem(bounty)
       .then(bounty => done())
@@ -44,9 +41,6 @@ describe('Bounty', function () {
 
   bountiesFailure.forEach(bounty => {
     it(`should fail on insert of ${bounty.title}`, function (done) {
-      const meta = bounty.meta || {};
-      meta.dateCreated = Date.now();
-      bounty.meta = meta;
       bounty.authors = [mongoose.Types.ObjectId()];
       return BountyMethods.createItem(bounty)
       .then(bounty => {

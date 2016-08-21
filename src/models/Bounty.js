@@ -8,7 +8,8 @@ const Schema = db.Schema;
 const BountySchema = new Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   projects: {
     type: [Schema.ObjectId],

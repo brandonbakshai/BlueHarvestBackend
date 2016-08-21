@@ -45,10 +45,6 @@ const PublicSchema = new Schema({
       type: Number,
       default: 0
     },
-    dateCreated: {
-      type: Date,
-      required: true
-    },
     upvotes: {
       type: Number,
       default: 0
@@ -59,7 +55,11 @@ const PublicSchema = new Schema({
     },
     tags: [String]
   }
-});
+},
+  {
+    timestamps: true
+  }
+);
 
 // update
 PublicSchema.statics.upvote = upvote;

@@ -28,7 +28,11 @@ const UserSchema = new Schema({
     created: [{ type: Schema.ObjectId, ref: 'Project' }],
     contributed: [{ type: Schema.ObjectId, ref: 'Project' }]
   }
-});
+},
+  {
+    timestamps: true
+  }
+);
 UserSchema.plugin(uniqueValidator);
 const iterations = 10;
 

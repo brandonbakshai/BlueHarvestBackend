@@ -28,9 +28,6 @@ describe('Thread', function () {
 
   threadsSuccess.forEach(thread => {
     it(`should create and insert ${thread.title}`, function (done) {
-      const meta = thread.meta || {};
-      meta.dateCreated = Date.now();
-      thread.meta = meta;
       thread.authors = [mongoose.Types.ObjectId()];
       ThreadMethods.createItem(thread)
       .then(thread => done())

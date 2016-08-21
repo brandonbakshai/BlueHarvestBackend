@@ -9,9 +9,9 @@ const expect = require('chai').expect;
 const assert = require('assert');
 var mongoose = require('mongoose');
 
-const before      = require('mocha').before;
-const describe       = require('mocha').describe;
-const it            = require('mocha').it;
+const before = require('mocha').before;
+const describe = require('mocha').describe;
+const it = require('mocha').it;
 
 const numberOfComments = commentsSuccess.length;
 
@@ -29,9 +29,6 @@ describe('Comment', function () {
 
   commentsSuccess.forEach(comment => {
     it(`should create and insert ${comment.title}`, function (done) {
-      const meta = comment.meta || {};
-      meta.dateCreated = Date.now();
-      comment.meta = meta;
       comment.parent = mongoose.Types.ObjectId();
       comment.authors = [mongoose.Types.ObjectId()];
       return CommentMethods.createItem(comment)
