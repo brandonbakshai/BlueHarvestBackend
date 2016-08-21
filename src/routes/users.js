@@ -28,7 +28,7 @@ function createUser(req, res) {
 }
 
 function getUser(req, res) {
-  User.getUser({ _id: req.params.user_id })
+  User.getUsers({ _id: req.params.user_id })
   .then(user => res.send(user))
   .catch(errorHandler);
 }

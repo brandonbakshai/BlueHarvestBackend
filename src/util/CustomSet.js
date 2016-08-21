@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * Used for comparison of mongoose objectIds
+ * This class is essentially a map with the true set values stored as map values and the corresponding keys being the toString()
+ * representation of the value
+ */
 class CustomSet {
 
   constructor() {

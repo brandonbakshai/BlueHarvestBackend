@@ -11,17 +11,20 @@ const ThreadSchema = new Schema({
   }
 });
 
+// create
 ThreadSchema.statics.createThread = createThread;
-ThreadSchema.statics.getThread = getThread;
+
+// get
+ThreadSchema.statics.getThreads = getThreads;
 
 const Thread = Public.discriminator('Thread', ThreadSchema);
 
-function createThread(project) {
-  const projectToInsert = new Thread(project);
-  return projectToInsert.save();
+function createThread(thread) {
+  const threadToInsert = new Thread(thread);
+  return threadToInsert.save();
 }
 
-function getThread(filter = {}) {
+function getThreads(filter = {}) {
   return Thread.find(filter);
 }
 

@@ -6,13 +6,16 @@ import Public from './Public';
 const Schema = db.Schema;
 const ProjectSchema = new Schema({
   bounty: {
-    type:     Schema.ObjectId,
-    ref:      'Bounty'
+    type: Schema.ObjectId,
+    ref: 'Bounty'
   }
 });
 
+// create
 ProjectSchema.statics.createProject = createProject;
-ProjectSchema.statics.getProject = getProject;
+
+// get
+ProjectSchema.statics.getProjects = getProjects;
 
 const Project = Public.discriminator('Project', ProjectSchema);
 
@@ -21,7 +24,7 @@ function createProject(project) {
   return projectToInsert.save();
 }
 
-function getProject(filter = {}) {
+function getProjects(filter = {}) {
   return Project.find(filter);
 }
 

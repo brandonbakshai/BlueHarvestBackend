@@ -3,17 +3,16 @@
 import db from './db.js';
 import Post from './Post';
 import CustomSet from '../util/CustomSet';
-import mongoose from 'mongoose';
 
 const Schema = db.Schema;
 const BountySchema = new Schema({
   title: {
-    type:     String,
+    type: String,
     required: true
   },
   projects: {
-    type:     [Schema.ObjectId],
-    ref:      'Project',
+    type: [Schema.ObjectId],
+    ref: 'Project',
     default: []
   },
   meta: {
@@ -28,8 +27,13 @@ const BountySchema = new Schema({
   }
 });
 
-BountySchema.statics.createBounty = createBounty;
-BountySchema.statics.getBounty = getBounty;
+// create
+BountySchema.statics.createItem = createBounty;
+
+// get
+BountySchema.statics.getItems = getBounties;
+
+// update
 BountySchema.statics.addProjects = addProjects;
 BountySchema.statics.removeProjects = removeProjects;
 BountySchema.statics.incrementViews = incrementViews;
@@ -42,7 +46,7 @@ function createBounty(bounty) {
   return bountyToInsert.save();
 }
 
-function getBounty(filter = {}) {
+function getBounties(filter = {}) {
   return Bounty.find(filter);
 }
 
@@ -75,8 +79,7 @@ function removeProjects(id, projects = []) {
 function incrementViews(id) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
-    const currentViews = bounty.meta.views || 0;
-    bounty.meta.views = currentViews + 1;
+    bounty.meta.views.$inc();
     return bounty.save();
   });
 }

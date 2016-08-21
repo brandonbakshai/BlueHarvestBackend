@@ -7,15 +7,17 @@ import Post from './Post';
 const Schema = db.Schema;
 const CommentSchema = new Schema({
   parent: {
-    type:     Schema.ObjectId,
-    ref:      'Public',
+    type: Schema.ObjectId,
+    ref: 'Public',
     required: true
   }
 });
 
+// create
 CommentSchema.statics.createComment = createComment;
-CommentSchema.statics.getComment = getComment;
-CommentSchema.statics.updateBody = updateBody;
+
+// get
+CommentSchema.statics.getComments = getComments;
 
 const Comment = Post.discriminator('Comment', CommentSchema);
 
@@ -24,16 +26,8 @@ function createComment(comment) {
   return commentToInsert.save();
 }
 
-function getComment(filter = {}) {
+function getComments(filter = {}) {
   return Comment.find(filter);
-}
-
-function updateBody(id, { body }) {
-  return Comment.findOne({ _id: id })
-  .then(comment => {
-    comment.body = body || comment.body;
-    return comment.save();
-  });
 }
 
 export default Comment;

@@ -10,7 +10,7 @@ const PostSchema = new Schema({
     required: true,
   },
   body:  {
-    type:     String,
+    type: String,
     required: true
   },
   meta: {
@@ -29,8 +29,12 @@ const PostSchema = new Schema({
   }
 });
 
+// update
 PostSchema.statics.upvote = upvote;
 PostSchema.statics.downvote = downvote;
+PostSchema.statics.updateBody = updateBody;
+
+// delete
 PostSchema.statics.deletePost = deletePost;
 
 const Post = db.model('Post', PostSchema);
@@ -47,6 +51,14 @@ function downvote(id) {
   return Post.findOne({ _id: id })
   .then(post => {
     post.meta.downvotes.$inc();
+    return post.save();
+  });
+}
+
+function updateBody(id, { body }) {
+  return Post.findOne({ _id: id })
+  .then(post => {
+    post.body = body || post.body;
     return post.save();
   });
 }

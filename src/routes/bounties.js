@@ -29,7 +29,7 @@ function createBounty(req, res) {
 }
 
 function getBounty(req, res) {
-  Bounty.getBounty({ _id: req.params.bounty_id })
+  Bounty.getBounties({ _id: req.params.bounty_id })
   .then(bounty => res.send(bounty))
   .catch(errorHandler);
 }

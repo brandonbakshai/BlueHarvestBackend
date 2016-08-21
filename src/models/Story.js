@@ -16,9 +16,12 @@ const StorySchema = new Schema({
   }
 });
 
-StorySchema.statics.createStory    = createStory;
-StorySchema.statics.getStory       = getStory;
-StorySchema.statics.getFreshStory  = getFreshStory;
+// create
+StorySchema.statics.createStory = createStory;
+
+// get
+StorySchema.statics.getStories = getStories;
+StorySchema.statics.getFreshStories = getFreshStories;
 
 const Story = Public.discriminator('Story', StorySchema);
 
@@ -36,7 +39,7 @@ function createStory(story) {
  * Method returning promise to query bing news search api and insert all data as Story in mongodb instance
  * @returns {Promise|Promise.<T>}
  */
-function getFreshStory() {
+function getFreshStories() {
   return requestPromise({
     url: 'https://api.cognitive.microsoft.com/bing/v5.0/news/?Category=ScienceAndTechnology', //URL to hit
     method: 'GET', //Specify the method
@@ -71,9 +74,9 @@ function buildStory(jsonValues) {
       media: [
         {
           typeOfMedia: 'thumbnail',
-          contentUrl:  thumbnail.contentUrl,
-          height:      thumbnail.height,
-          width:       thumbnail.width
+          contentUrl: thumbnail.contentUrl,
+          height: thumbnail.height,
+          width: thumbnail.width
         }]
     },
     meta: {
@@ -88,7 +91,7 @@ function buildStory(jsonValues) {
   return storyToInsert.save();
 }
 
-function getStory(filter = {}) {
+function getStories(filter = {}) {
   return Story.find(filter);
 }
 

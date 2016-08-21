@@ -31,12 +31,17 @@ const UserSchema = new Schema({
 UserSchema.plugin(uniqueValidator);
 const iterations = 10;
 
-UserSchema.statics.verifyPassword    = verifyPassword;
-UserSchema.statics.getFreshNewsItems = generateData;
-
+// create
 UserSchema.statics.createUser = createUser;
-UserSchema.statics.getUser = getUser;
+UserSchema.statics.verifyPassword = verifyPassword;
+
+// get
+UserSchema.statics.getUsers = getUsers;
+
+// update
 UserSchema.statics.updateUser = updateUser;
+
+// delete
 UserSchema.statics.deleteUser = deleteUser;
 
 const User = db.model('User', UserSchema);
@@ -63,7 +68,7 @@ function createUser({ name, email, password }) {
  * @param filter
  * @returns {Query|*|T}
  */
-function getUser(filter = {}) {
+function getUsers(filter = {}) {
   return User.find(filter);
 }
 
@@ -101,20 +106,6 @@ function deleteUser(id) {
 function verifyPassword({ email, password }) {
   return User.findOne({ email }, 'hashedPassword')
   .then(user => bcrypt.compare(password, user.hashedPassword));
-}
-
-/**
- * Method returning promise to generate data for development use
- * @param res
- * @returns {Promise|Promise.<T>}
- */
-function generateData(res) {
-  const name = "Brandon Bakhshai";
-  const email = "brandon.bakhshai@gmail.com";
-  const password = "password";
-
-  return createUser({ name, email, password })
-  .then(data => res.send(data));
 }
 
 export default User;

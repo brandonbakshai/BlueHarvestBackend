@@ -5,7 +5,7 @@ import db from './db.js';
 const Schema = db.Schema;
 const PublicSchema = new Schema({
   title: {
-    type:     String,
+    type: String,
     required: true
   },
   authors: {
@@ -14,24 +14,24 @@ const PublicSchema = new Schema({
     required: true,
   },
   body:  {
-    type:     String,
+    type: String,
     required: true
   },
   thumbnail: {
-    contentUrl:  String,
-    height:      Number,
-    width:       Number
+    contentUrl: String,
+    height: Number,
+    width: Number
   },
   media: [
     {
       typeOfMedia: {
-        type:     String,
-        enum:     ['video', 'image', 'audio'],
+        type: String,
+        enum: ['video', 'image', 'audio'],
         required: true
       },
-      contentUrl:  String,
-      height:      Number,
-      width:       Number
+      contentUrl: String,
+      height: Number,
+      width: Number
     }],
   urls: [{
       description: String,
@@ -61,8 +61,13 @@ const PublicSchema = new Schema({
   }
 });
 
+// update
 PublicSchema.statics.upvote = upvote;
 PublicSchema.statics.downvote = downvote;
+PublicSchema.statics.updateBody = updateBody;
+PublicSchema.statics.incrementViews = incrementViews;
+
+// delete
 PublicSchema.statics.deletePost = deletePost;
 
 const Public = db.model('Public', PublicSchema);
@@ -79,6 +84,22 @@ function downvote(id) {
   return Public.findOne({ _id: id })
   .then(post => {
     post.meta.downvotes.$inc();
+    return post.save();
+  });
+}
+
+function incrementViews(id) {
+  return Public.findOne({ _id: id })
+  .then(post => {
+    post.meta.views.$inc();
+    return post.save();
+  });
+}
+
+function updateBody(id, { body }) {
+  return Post.findOne({ _id: id })
+  .then(post => {
+    post.body = body || post.body;
     return post.save();
   });
 }
