@@ -6,12 +6,12 @@ import utility from './utility';
 const router = express.Router();
 
 router.route('/')
-  .get(utility.getAllHelper('bounties'))
-  .post(utility.createHelper('bounties'));
+  .get(utility.getAllHelper('Bounty'))
+  .post(utility.createHelper('Bounty'));
 
 router.route('/:bounty_id')
-  .get(utility.getHelper('bounties'))
-  .put(utility.updateHelper('bounties'))
-  .delete(utility.deleteHelper('bounties'));
+  .get(utility.getHelper('Bounty'))
+  .put(utility.updateHelper('Bounty'))
+  .delete(utility.deleteHelper('Bounty'));
 
 export default router;

@@ -13,7 +13,7 @@ const before = require('mocha').before;
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 
-const utility = require('../../src/routes/utility');
+const utility = require('../../src/routes/utility').default;
 
 const numberOfBounties = bountiesSuccess.length;
 
