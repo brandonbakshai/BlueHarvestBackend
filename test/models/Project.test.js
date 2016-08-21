@@ -33,14 +33,14 @@ describe('Project', function () {
       project.meta = meta;
       project.authors = [mongoose.Types.ObjectId()];
       project.bounty = mongoose.Types.ObjectId();
-      ProjectMethods.createProject(project)
+      ProjectMethods.createItem(project)
       .then(project => done())
       .catch(err => done(err));
     });
   });
 
   it(`getProject should return ${numberOfProjects}, the number of projects in projects.json`, function (done) {
-    ProjectMethods.getProject()
+    ProjectMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfProjects);
       done();
@@ -49,7 +49,7 @@ describe('Project', function () {
   });
 
   it('getProject should return no result', function (done) {
-    ProjectMethods.getProject({name: 'blah'})
+    ProjectMethods.getItems({name: 'blah'})
     .then(function (result) {
       expect(result.length).to.equal(0);
       done();

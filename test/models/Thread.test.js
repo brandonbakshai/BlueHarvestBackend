@@ -32,14 +32,14 @@ describe('Thread', function () {
       meta.dateCreated = Date.now();
       thread.meta = meta;
       thread.authors = [mongoose.Types.ObjectId()];
-      ThreadMethods.createThread(thread)
+      ThreadMethods.createItem(thread)
       .then(thread => done())
       .catch(err => done(err));
     });
   });
 
   it(`getThread should return ${numberOfThreads}, the number of threads in threads.json`, function (done) {
-    ThreadMethods.getThread()
+    ThreadMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfThreads);
       done();
@@ -48,7 +48,7 @@ describe('Thread', function () {
   });
 
   it('getThread should return no result', function (done) {
-    ThreadMethods.getThread({name: 'blah'})
+    ThreadMethods.getItems({name: 'blah'})
     .then(function (result) {
       expect(result.length).to.equal(0);
       done();

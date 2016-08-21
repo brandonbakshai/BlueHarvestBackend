@@ -14,10 +14,10 @@ const CommentSchema = new Schema({
 });
 
 // create
-CommentSchema.statics.createComment = createComment;
+CommentSchema.statics.createItem = createComment;
 
 // get
-CommentSchema.statics.getComments = getComments;
+CommentSchema.statics.getItems = getComments;
 
 const Comment = Post.discriminator('Comment', CommentSchema);
 

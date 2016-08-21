@@ -12,10 +12,10 @@ const ProjectSchema = new Schema({
 });
 
 // create
-ProjectSchema.statics.createProject = createProject;
+ProjectSchema.statics.createItem = createProject;
 
 // get
-ProjectSchema.statics.getProjects = getProjects;
+ProjectSchema.statics.getItems = getProjects;
 
 const Project = Public.discriminator('Project', ProjectSchema);
 

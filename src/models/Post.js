@@ -35,14 +35,14 @@ PostSchema.statics.downvote = downvote;
 PostSchema.statics.updateBody = updateBody;
 
 // delete
-PostSchema.statics.deletePost = deletePost;
+PostSchema.statics.deleteItem = deleteItem;
 
 const Post = db.model('Post', PostSchema);
 
 function upvote(id) {
   return Post.findOne({ _id: id })
   .then(post => {
-    post.meta.upvotes.$inc();
+    post.meta.upvotes += 1;
     return post.save();
   });
 }
@@ -50,7 +50,7 @@ function upvote(id) {
 function downvote(id) {
   return Post.findOne({ _id: id })
   .then(post => {
-    post.meta.downvotes.$inc();
+    post.meta.downvotes += 1;
     return post.save();
   });
 }
@@ -68,7 +68,7 @@ function updateBody(id, { body }) {
  * @param id
  * @returns {Promise}
  */
-function deletePost(id) {
+function deleteItem(id) {
   return Post.remove({ _id: id });
 }
 

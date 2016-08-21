@@ -17,11 +17,15 @@ const StorySchema = new Schema({
 });
 
 // create
-StorySchema.statics.createStory = createStory;
+StorySchema.statics.createItem = createStory;
 
 // get
-StorySchema.statics.getStories = getStories;
+StorySchema.statics.getItems = getStories;
 StorySchema.statics.getFreshStories = getFreshStories;
+
+// update
+StorySchema.statics.addComments = addComments;
+StorySchema.statics.removeComments = removeComments;
 
 const Story = Public.discriminator('Story', StorySchema);
 
@@ -93,6 +97,32 @@ function buildStory(jsonValues) {
 
 function getStories(filter = {}) {
   return Story.find(filter);
+}
+
+function addComments(id, comments = []) {
+  return Story.findOne({ _id: id })
+  .then(story => {
+    const commentSet = new CustomSet();
+
+    commentSet.add(story.comments);
+    commentSet.add(comments);
+    story.comments = [...commentSet];
+
+    return story.save();
+  });
+}
+
+function removeComments(id, comments = []) {
+  return Story.findOne({ _id: id })
+  .then(story => {
+    const commentSet = new CustomSet();
+
+    commentSet.add(story.comments);
+    commentSet.delete(comments);
+    story.comments = [...commentSet];
+
+    return story.save();
+  });
 }
 
 export default Story;

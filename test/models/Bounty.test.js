@@ -36,7 +36,7 @@ describe('Bounty', function () {
       meta.dateCreated = Date.now();
       bounty.meta = meta;
       bounty.authors = [mongoose.Types.ObjectId()];
-      return BountyMethods.createBounty(bounty)
+      return BountyMethods.createItem(bounty)
       .then(bounty => done())
       .catch(err => done(err));
     });
@@ -48,7 +48,7 @@ describe('Bounty', function () {
       meta.dateCreated = Date.now();
       bounty.meta = meta;
       bounty.authors = [mongoose.Types.ObjectId()];
-      return BountyMethods.createBounty(bounty)
+      return BountyMethods.createItem(bounty)
       .then(bounty => {
         assert.fail();
         done();
@@ -60,7 +60,7 @@ describe('Bounty', function () {
   /* getBounty */
 
   it(`getBounty should return ${numberOfBounties}, the number of bounties in bounties.json`, function (done) {
-    BountyMethods.getBounty()
+    BountyMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfBounties);
       done();
@@ -76,7 +76,7 @@ describe('Bounty', function () {
     projectSet.add(project);
 
     // get bounty with title "bounty one"
-    BountyMethods.getBounty({ title: "bounty one"})
+    BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.projects.length).to.eql(0);
@@ -93,7 +93,7 @@ describe('Bounty', function () {
 
   it(`addProjects should add the same project to the projects field of a bounty with no effect`, function (done) {
     // get bounty with title "bounty one"
-    BountyMethods.getBounty({ title: "bounty one"})
+    BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.projects.length).to.eql(1);
@@ -110,7 +110,7 @@ describe('Bounty', function () {
 
   it(`removeProjects should successfully remove a project from the projects field of a bounty`, function (done) {
     // get bounty with title "bounty one"
-    BountyMethods.getBounty({ title: "bounty one"})
+    BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.projects.length).to.equal(1);
@@ -127,7 +127,7 @@ describe('Bounty', function () {
 
   it(`incrementViews should successfully increase viewcount of bounty by one`, function (done) {
     // get bounty with title "bounty one"
-    BountyMethods.getBounty({ title: "bounty one"})
+    BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.meta.views).to.equal(0);
@@ -146,7 +146,7 @@ describe('Bounty', function () {
     const tags = ['social justice', 'social networking', 'android'];
 
     // get bounty with title "bounty one"
-    BountyMethods.getBounty({ title: "bounty one"})
+    BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.meta.tags.length).to.equal(0);

@@ -34,14 +34,14 @@ describe('Comment', function () {
       comment.meta = meta;
       comment.parent = mongoose.Types.ObjectId();
       comment.authors = [mongoose.Types.ObjectId()];
-      return CommentMethods.createComment(comment)
+      return CommentMethods.createItem(comment)
       .then(comment => done())
       .catch(err => done(err));
     });
   });
 
-  it(`getComment should return ${numberOfComments}, the number of comments in comments.json`, function (done) {
-    CommentMethods.getComment()
+  it(`getItems should return ${numberOfComments}, the number of comments in comments.json`, function (done) {
+    CommentMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfComments);
       done();
@@ -49,8 +49,8 @@ describe('Comment', function () {
     .catch(err => done(err));
   });
 
-  it('getComment should return no result', function (done) {
-    CommentMethods.getComment({title: 'blah'})
+  it('getItems should return no result', function (done) {
+    CommentMethods.getItems({title: 'blah'})
     .then(function (result) {
       expect(result.length).to.equal(0);
       done();

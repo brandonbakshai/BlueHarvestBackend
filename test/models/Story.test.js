@@ -32,14 +32,14 @@ describe('Story', function () {
       meta.dateCreated = Date.now();
       story.meta = meta;
       story.authors = [mongoose.Types.ObjectId()];
-      StoryMethods.createStory(story)
+      StoryMethods.createItem(story)
       .then(story => done())
       .catch(err => done(err));
     });
   });
 
   it(`getStory should return ${numberOfStories}, the number of stories in stories.json`, function (done) {
-    StoryMethods.getStory()
+    StoryMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfStories);
       done();
@@ -48,7 +48,7 @@ describe('Story', function () {
   });
 
   it('getStory should return no result', function (done) {
-    StoryMethods.getStory({name: 'blah'})
+    StoryMethods.getItems({name: 'blah'})
     .then(function (result) {
       expect(result.length).to.equal(0);
       done();

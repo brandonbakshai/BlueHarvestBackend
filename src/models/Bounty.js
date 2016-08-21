@@ -79,7 +79,7 @@ function removeProjects(id, projects = []) {
 function incrementViews(id) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
-    bounty.meta.views.$inc();
+    bounty.meta.views += 1;
     return bounty.save();
   });
 }

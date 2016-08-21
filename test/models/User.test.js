@@ -26,7 +26,7 @@ describe('User', function () {
 
   usersSuccess.forEach(user => {
     it(`should create and insert ${user.name}`, function (done) {
-      UserMethods.createUser(user)
+      UserMethods.createItem(user)
       .then((insertedUser) => {
         done();
       })
@@ -46,7 +46,7 @@ describe('User', function () {
   });
 
   it(`getUser should return ${numberOfSuccesses}, the number of success cases in users.json`, function (done) {
-    UserMethods.getUser()
+    UserMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfSuccesses);
       done();
@@ -55,7 +55,7 @@ describe('User', function () {
   });
 
   it('getUser should return no result', function (done) {
-    UserMethods.getUser({email: 'blah@blah.com'})
+    UserMethods.getItems({email: 'blah@blah.com'})
     .then(function (result) {
       expect(result.length).to.equal(0);
       done();
@@ -65,7 +65,7 @@ describe('User', function () {
 
   usersFailure.forEach(user => {
     it(`should fail on attempted insertion of ${user.name}`, function (done) {
-      UserMethods.createUser(user)
+      UserMethods.createItem(user)
       .then((insertedUser) => {
         assert.fail();
         done();
@@ -75,7 +75,7 @@ describe('User', function () {
   });
 
   it(`getUser should return ${numberOfSuccesses}, the number of success cases in users.json`, function (done) {
-    UserMethods.getUser()
+    UserMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfSuccesses);
       done();

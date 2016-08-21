@@ -68,14 +68,14 @@ PublicSchema.statics.updateBody = updateBody;
 PublicSchema.statics.incrementViews = incrementViews;
 
 // delete
-PublicSchema.statics.deletePost = deletePost;
+PublicSchema.statics.deleteItem = deletePost;
 
 const Public = db.model('Public', PublicSchema);
 
 function upvote(id) {
   return Public.findOne({ _id: id })
   .then(post => {
-    post.meta.upvotes.$inc();
+    post.meta.upvotes += 1;
     return post.save();
   });
 }
@@ -83,7 +83,7 @@ function upvote(id) {
 function downvote(id) {
   return Public.findOne({ _id: id })
   .then(post => {
-    post.meta.downvotes.$inc();
+    post.meta.downvotes += 1;
     return post.save();
   });
 }
@@ -91,7 +91,7 @@ function downvote(id) {
 function incrementViews(id) {
   return Public.findOne({ _id: id })
   .then(post => {
-    post.meta.views.$inc();
+    post.meta.views =+ 1;
     return post.save();
   });
 }

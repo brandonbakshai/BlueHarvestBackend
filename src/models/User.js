@@ -4,6 +4,7 @@ import db from './db.js';
 import bcrypt from 'bcrypt-as-promised';
 import isEmail from 'validator/lib/isEmail';
 import uniqueValidator from 'mongoose-unique-validator';
+import CustomSet from '../util/CustomSet';
 
 const Schema = db.Schema;
 const UserSchema = new Schema({
@@ -32,17 +33,27 @@ UserSchema.plugin(uniqueValidator);
 const iterations = 10;
 
 // create
-UserSchema.statics.createUser = createUser;
+UserSchema.statics.createItem = createUser;
 UserSchema.statics.verifyPassword = verifyPassword;
 
 // get
-UserSchema.statics.getUsers = getUsers;
+UserSchema.statics.getItems = getUsers;
 
 // update
-UserSchema.statics.updateUser = updateUser;
+UserSchema.statics.updateItem = updateUser;
+
+UserSchema.statics.addProjectsCreated = addProjectsCreated;
+UserSchema.statics.removeProjectsCreated = removeProjectsCreated;
+UserSchema.statics.addProjectsContributed = addProjectsContributed;
+UserSchema.statics.removeProjectsContributed = removeProjectsContributed;
+
+UserSchema.statics.addBountiesCreated = addBountiesCreated;
+UserSchema.statics.removeBountiesCreated = removeBountiesCreated;
+UserSchema.statics.addBountiesContributed = addBountiesContributed;
+UserSchema.statics.removeBountiesContributed = removeBountiesContributed;
 
 // delete
-UserSchema.statics.deleteUser = deleteUser;
+UserSchema.statics.deleteItem = deleteUser;
 
 const User = db.model('User', UserSchema);
 
@@ -106,6 +117,114 @@ function deleteUser(id) {
 function verifyPassword({ email, password }) {
   return User.findOne({ email }, 'hashedPassword')
   .then(user => bcrypt.compare(password, user.hashedPassword));
+}
+
+// projects
+
+function addProjectsCreated(id, projects = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const projectSet = new CustomSet();
+
+    projectSet.add(user.projects.created);
+    projectSet.add(projects);
+    user.projects.created =  [...projectSet];
+
+    return user.save();
+  });
+}
+
+function removeProjectsCreated(id, projects = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const projectSet = new CustomSet();
+
+    projectSet.add(user.projects.created);
+    projectSet.delete(projects);
+    user.projects.created = [...projectSet];
+
+    return user.save();
+  });
+}
+
+function addProjectsContributed(id, projects = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const projectSet = new CustomSet();
+
+    projectSet.add(user.projects.contributed);
+    projectSet.add(projects);
+    user.projects.contributed =  [...projectSet];
+
+    return user.save();
+  });
+}
+
+function removeProjectsContributed(id, projects = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const projectSet = new CustomSet();
+
+    projectSet.add(user.projects.contributed);
+    projectSet.delete(projects);
+    user.projects.contributed = [...projectSet];
+
+    return user.save();
+  });
+}
+
+// bounties
+
+function addBountiesCreated(id, bounties = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const bountySet = new CustomSet();
+
+    bountySet.add(user.bounties.created);
+    bountySet.add(bounties);
+    user.bounties.created =  [...bountySet];
+
+    return user.save();
+  });
+}
+
+function removeBountiesCreated(id, bounties = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const bountySet = new CustomSet();
+
+    bountySet.add(user.bounties.created);
+    bountySet.delete(bounties);
+    user.bounties.created = [...bountySet];
+
+    return user.save();
+  });
+}
+
+function addBountiesContributed(id, bounties = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const bountySet = new CustomSet();
+
+    bountySet.add(user.bounties.contributed);
+    bountySet.add(bounties);
+    user.bounties.contributed =  [...bountySet];
+
+    return user.save();
+  });
+}
+
+function removeBountiesContributed(id, bounties = []) {
+  return User.findOne({ _id: id })
+  .then(user => {
+    const bountySet = new CustomSet();
+
+    bountySet.add(user.bounties.contributed);
+    bountySet.delete(bounties);
+    user.bounties.contributed = [...bountySet];
+
+    return user.save();
+  });
 }
 
 export default User;
