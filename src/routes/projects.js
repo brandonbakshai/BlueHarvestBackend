@@ -1,25 +1,17 @@
 'use strict';
 
 import express from 'express';
-import Project from '../models/Project';
+import utility from './utility';
 
 const router = express.Router();
 
 router.route('/')
-  .get(getAllUsers)
-  .post(createUser)
+  .get(utility.getAllHelper('projects'))
+  .post(utility.createHelper('projects'));
 
-  .get(':project_id', getProject)
-  .put(':project_id', updateProject)
-  .delete(':project_id', deleteProject);
-
-router.get('/', (req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  Bounty.find()
-  .then((result) => { return res.send(result); })
-  .catch(err => next(err));
-});
-
-router.get('/generate', (req, res, next) => { /* do something here */ });
+router.route('/:project_id')
+  .get(utility.getHelper('projects'))
+  .put(utility.updateHelper('projects'))
+  .delete(utility.deleteHelper('projects'));
 
 export default router;

@@ -1,49 +1,17 @@
 'use strict';
 
 import express from 'express';
-import Comment from '../models/Comment';
-import errorHandler from './utility';
+import utility from './utility';
 
 const router = express.Router();
 
 router.route('/')
-.get(getAllComments)
-.post(createComment);
+  .get(utility.getAllHelper('comments'))
+  .post(utility.createHelper('comments'));
 
 router.route('/:comment_id')
-.get(getComment)
-.put(updateComment)
-.delete(deleteComment);
-
-function getAllComments(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  Comment.getComment()
-  .then(comments => res.send(comments))
-  .catch(errorHandler);
-}
-
-function createComment(req, res) {
-  Comment.createComment(req.body)
-  .then(comment => res.send(comment))
-  .catch(err => res.send(err));
-}
-
-function getComment(req, res) {
-  Comment.getComments({ _id: req.params.comment_id })
-  .then(comment => res.send(comment))
-  .catch(errorHandler);
-}
-
-function updateComment(req, res) {
-  Comment.updateComment(req.body)
-  .then(comment => res.send(comment))
-  .catch(errorHandler);
-}
-
-function deleteComment(req, res) {
-  Comment.deleteComment(req.params.comment_id)
-  .then(() => res.send('success'))
-  .catch(errorHandler);
-}
+  .get(utility.getHelper('comments'))
+  .put(utility.updateHelper('comments'))
+  .delete(utility.deleteHelper('comments'));
 
 export default router;
