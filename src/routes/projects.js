@@ -2,16 +2,17 @@
 
 import express from 'express';
 import utility from './utility';
+import Project from '../models/Project';
 
 const router = express.Router();
 
 router.route('/')
-  .get(utility.getAllHelper('projects'))
-  .post(utility.createHelper('projects'));
+  .get(utility.getAllHelper(Project))
+  .post(utility.createHelper(Project));
 
 router.route('/:project_id')
-  .get(utility.getHelper('projects'))
-  .put(utility.updateHelper('projects'))
-  .delete(utility.deleteHelper('projects'));
+  .get(utility.getHelper(Project))
+  .put(utility.updateHelper(Project))
+  .delete(utility.deleteHelper(Project));
 
 export default router;

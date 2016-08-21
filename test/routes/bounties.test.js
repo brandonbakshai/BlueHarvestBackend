@@ -17,6 +17,13 @@ const utility = require('../../src/routes/utility').default;
 
 const numberOfBounties = bountiesSuccess.length;
 
+let firstBounty;
+const res = {
+  send: items => items,
+  setHeader: () => {}
+};
+
+
 describe('bounties', function () {
 
   // wipe all data
@@ -28,9 +35,6 @@ describe('bounties', function () {
     })
     .catch(err => done(err));
   });
-
-  const res = { send: () => {} };
-  let firstBounty;
 
   /* route '/' */
 
@@ -62,11 +66,10 @@ describe('bounties', function () {
 
    /* get */
   it(`should get the single specified bounty from the collection`, function (done) {
-    const req = {};
+    const req = { params: {} };
     req.params.bounty_id = firstBounty._id;
     return utility.getHelper(req, res, Bounty)
     .then((bounty) => {
-      console.log(bounty);
       done();
     })
     .catch(err => done(err));
@@ -76,7 +79,7 @@ describe('bounties', function () {
 
    /* delete */
   it(`should delete the single specified bounty from the collection`, function (done) {
-    const req = {};
+    const req = { params: {} };
     req.params.bounty_id = firstBounty._id;
     return utility.deleteHelper(req, res, Bounty)
     .then((msg) => {

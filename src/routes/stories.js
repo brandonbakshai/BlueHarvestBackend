@@ -1,19 +1,19 @@
 'use strict';
 
 import express from 'express';
-import Story from '../models/Story';
 import utility from './utility';
+import Story from '../models/Story';
 
 const router = express.Router();
 
 router.route('/')
-  .get(utility.getAllHelper('stories'))
-  .post(utility.createHelper('stories'));
+  .get(utility.getAllHelper(Story))
+  .post(utility.createHelper(Story));
 
 router.route('/:story_id')
-  .get(utility.getHelper('stories'))
-  .put(utility.updateHelper('stories'))
-  .delete(utility.deleteHelper('stories'));
+  .get(utility.getHelper(Story))
+  .put(utility.updateHelper(Story))
+  .delete(utility.deleteHelper(Story));
 
 router.get('/live', getFreshStories);
 
