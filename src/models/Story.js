@@ -3,6 +3,7 @@
 import db from './db.js';
 import requestPromise from 'request-promise';
 import Public from './Public';
+import CustomSet from '../util/CustomSet';
 
 const Schema = db.Schema;
 const StorySchema = new Schema({
@@ -75,20 +76,18 @@ function buildStory(jsonValues) {
       text:  {
         body: jsonValues.description
       },
-      media: [
-        {
-          typeOfMedia: 'thumbnail',
-          contentUrl: thumbnail.contentUrl,
-          height: thumbnail.height,
-          width: thumbnail.width
-        }]
+      thumbnail: {
+        contentUrl: thumbnail.contentUrl,
+        height: thumbnail.height,
+        width: thumbnail.width
+      }
     },
     meta: {
       about: jsonValues.about,
       provider: jsonValues.provider,
       url: jsonValues.url,
       tags: jsonValues.category,
-      dateCreated: jsonValues.datePublished,
+      datePublished: jsonValues.datePublished,
     }
   };
   const storyToInsert = new Story(story);
