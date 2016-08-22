@@ -149,7 +149,6 @@ describe('Bounty', function () {
     .then(bounty => {
       console.log(typeof bounty.meta.tags[0]);
       console.log(typeof tags[0]);
-      // expect(bounty.meta.tags.map(x => x.toString())).to.eql(tags.map(x => x.toString()));
       assert(checkEquality(bounty.meta.tags, tags));
       done();
     })
@@ -162,10 +161,7 @@ function checkEquality(one, two) {
 
   for (let i = 0; i < one.length; i++) {
     if (one[i] != two[i]) {
-      // console.log(one[i] == two[i]);
-      // console.log(one[i]);
-      // console.log(two[i]);
-      return false;
+     return false;
     }
   }
 
