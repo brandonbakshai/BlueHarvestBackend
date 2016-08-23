@@ -1,7 +1,7 @@
 'use strict';
 
-const CommentMethods  = require( '../../src/models/Comment').default.schema.statics;
 const Comment = require( '../../src/models/Comment').default;
+const CommentMethods  = Comment.schema.statics;
 const commentsSuccess = require('../test-data/comments').successCases;
 const commentsFailure = require('../test-data/comments').failureCases;
 
@@ -27,6 +27,8 @@ describe('Comment', function () {
     .catch(err => done(err));
   });
 
+  /* createItem */
+
   commentsSuccess.forEach(comment => {
     it(`should create and insert ${comment.title}`, function (done) {
       comment.parent = mongoose.Types.ObjectId();
@@ -36,6 +38,20 @@ describe('Comment', function () {
       .catch(err => done(err));
     });
   });
+
+  commentsFailure.forEach(comment => {
+    it(`should fail on insert of ${comment.title}`, function (done) {
+      bounty.authors = [mongoose.Types.ObjectId()];
+      return CommentMethods.createItem(bounty)
+      .then(() => {
+        assert.fail();
+        done();
+      })
+      .catch(err => done());
+    });
+  });
+
+  /* getItems */
 
   it(`getItems should return ${numberOfComments}, the number of comments in comments.json`, function (done) {
     CommentMethods.getItems()

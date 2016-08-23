@@ -28,7 +28,7 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
-  /* createBounty */
+  /* createItem */
 
   bountiesSuccess.forEach(bounty => {
     it(`should create and insert ${bounty.title}`, function (done) {
@@ -51,9 +51,9 @@ describe('Bounty', function () {
     });
   });
 
-  /* getBounty */
+  /* getItems */
 
-  it(`getBounty should return ${numberOfBounties}, the number of bounties in bounties.json`, function (done) {
+  it(`getBounties should return ${numberOfBounties}, the number of bounties in bounties.json`, function (done) {
     BountyMethods.getItems()
     .then(function (result) {
       expect(result.length).to.equal(numberOfBounties);

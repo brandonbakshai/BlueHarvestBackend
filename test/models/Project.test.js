@@ -36,6 +36,18 @@ describe('Project', function () {
     });
   });
 
+  projectsFailure.forEach(project => {
+    it(`should fail on insert of ${project.title}`, function (done) {
+      project.authors = [mongoose.Types.ObjectId()];
+      return ProjectMethods.createItem(project)
+      .then(() => {
+        assert.fail();
+        done();
+      })
+      .catch(err => done());
+    });
+  });
+
   it(`getProject should return ${numberOfProjects}, the number of projects in projects.json`, function (done) {
     ProjectMethods.getItems()
     .then(function (result) {
