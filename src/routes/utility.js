@@ -1,18 +1,18 @@
 'use strict';
 
-function createHelper(req, res, model) {
+function createHelper(model, req, res) {
   return model.createItem(req.body)
   .then(item => res.send(item))
   .catch(err => res.send(err));
 }
 
-function getHelper(req, res, model) {
+function getHelper(model, req, res) {
   return model.getItems({ _id: req.params.bounty_id })
   .then(item => res.send(item))
   .catch(err => res.send(err));
 }
 
-function getAllHelper(req, res, model) {
+function getAllHelper(model, req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   return model.getItems(req.body)
@@ -20,13 +20,13 @@ function getAllHelper(req, res, model) {
   .catch(err => res.send(err));
 }
 
-function updateHelper(req, res, model) {
+function updateHelper(model, req, res) {
   return model.updateItem(req.body)
   .then(item => res.send(item))
   .catch(err => res.send(err));
 }
 
-function deleteHelper(req, res, model) {
+function deleteHelper(model, req, res) {
   return model.deleteItem(req.params.bounty_id)
   .then(() => res.send('success'))
   .catch(err => res.send(err));

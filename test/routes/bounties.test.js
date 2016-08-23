@@ -43,7 +43,7 @@ describe('bounties', function () {
     it(`should create and insert ${bounty.title}`, function (done) {
       bounty.authors = [mongoose.Types.ObjectId()];
       const req = { body: bounty };
-      return utility.createHelper(req, res, Bounty)
+      return utility.createHelper(Bounty, req, res)
       .then(bounty => done())
       .catch(err => done(err));
     });
@@ -52,7 +52,7 @@ describe('bounties', function () {
   /* get */
   it(`should get all ${numberOfBounties} bounties in the collection`, function (done) {
     const req = {};
-    return utility.getAllHelper(req, res, Bounty)
+    return utility.getAllHelper(Bounty, req, res)
     .then((bounties) => {
       expect(bounties.length).to.equal(numberOfBounties);
       firstBounty = bounties[0];
@@ -68,7 +68,7 @@ describe('bounties', function () {
   it(`should get the single specified bounty from the collection`, function (done) {
     const req = { params: {} };
     req.params.bounty_id = firstBounty._id;
-    return utility.getHelper(req, res, Bounty)
+    return utility.getHelper(Bounty, req, res)
     .then((bounty) => {
       done();
     })
@@ -81,7 +81,7 @@ describe('bounties', function () {
   it(`should delete the single specified bounty from the collection`, function (done) {
     const req = { params: {} };
     req.params.bounty_id = firstBounty._id;
-    return utility.deleteHelper(req, res, Bounty)
+    return utility.deleteHelper(Bounty, req, res)
     .then((msg) => {
       console.log(msg);
       done();

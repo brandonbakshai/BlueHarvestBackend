@@ -12,7 +12,11 @@ router.route('/')
 
 router.route('/:bounty_id')
   .get(utility.getHelper(Bounty))
-  .put(utility.updateHelper(Bounty))
+  .put(Bounty(Bounty))
   .delete(utility.deleteHelper(Bounty));
+
+function updateBody(id, { body }) {
+
+}
 
 export default router;
