@@ -20,15 +20,33 @@ function getAllHelper(model, req, res) {
   .catch(err => res.send(err));
 }
 
-function updateHelper(model, req, res) {
-  return model.updateItem(req.body)
-  .then(item => res.send(item))
-  .catch(err => res.send(err));
-}
-
 function deleteHelper(model, req, res) {
   return model.deleteItem(req.params.bounty_id)
   .then(() => res.send('success'))
+  .catch(err => res.send(err));
+}
+
+function updateDataHelper(model, req, res) {
+  return model.updateData(req.params.bounty_id, req.body)
+  .then(bounty => res.send(bounty))
+  .catch(err => res.send(err));
+}
+
+function upvoteHelper(model, req, res) {
+  return model.upvote(req.params.bounty_id)
+  .then(bounty => res.send(bounty))
+  .catch(err => res.send(err));
+}
+
+function downvoteHelper(model, req, res) {
+  return model.downvote(req.params.bounty_id)
+  .then(bounty => res.send(bounty))
+  .catch(err => res.send(err));
+}
+
+function incrementViewsHelper(model, req, res) {
+  return model.incrementViews(req.params.bounty_id)
+  .then(bounty => res.send(bounty))
   .catch(err => res.send(err));
 }
 
@@ -41,7 +59,10 @@ export default {
   createHelper,
   getHelper,
   getAllHelper,
-  updateHelper,
+  updateDataHelper,
+  upvoteHelper,
+  downvoteHelper,
+  incrementViewsHelper,
   deleteHelper,
   errorHandler
 }

@@ -38,7 +38,7 @@ BountySchema.statics.getItems = getBounties;
 BountySchema.statics.addProjects = addProjects;
 BountySchema.statics.removeProjects = removeProjects;
 BountySchema.statics.incrementViews = incrementViews;
-BountySchema.statics.updateTags = updateTags;
+BountySchema.statics.updateData = updateData;
 
 const Bounty = Post.discriminator('Bounty', BountySchema);
 
@@ -85,9 +85,11 @@ function incrementViews(id) {
   });
 }
 
-function updateTags(id, tags) {
+function updateData(id, { body, authors, tags }) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
+    bounty.body = body || bounty.body;
+    bounty.authors = authors || bounty.authors;
     bounty.meta.tags = tags;
     return bounty.save();
   });

@@ -12,11 +12,17 @@ router.route('/')
 
 router.route('/:bounty_id')
   .get(utility.getHelper(Bounty))
-  .put(Bounty(Bounty))
+  .put(utility.updateDataHelper(Bounty))
   .delete(utility.deleteHelper(Bounty));
 
-function updateBody(id, { body }) {
+router.route('/:bounty_id/upvote')
+  .put(utility.upvoteHelper(Bounty));
 
-}
+router.route('/:bounty_id/downvote')
+  .put(utility.downvoteHelper(Bounty));
+
+router.route('/:bounty_id/view')
+.put(utility.incrementViewsHelper(Bounty));
+
 
 export default router;

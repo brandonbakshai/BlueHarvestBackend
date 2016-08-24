@@ -32,7 +32,7 @@ const PostSchema = new Schema({
 // update
 PostSchema.statics.upvote = upvote;
 PostSchema.statics.downvote = downvote;
-PostSchema.statics.updateBody = updateBody;
+PostSchema.statics.updateData = updateData;
 
 // delete
 PostSchema.statics.deleteItem = deleteItem;
@@ -55,10 +55,11 @@ function downvote(id) {
   });
 }
 
-function updateBody(id, { body }) {
+function updateData(id, { body, authors }) {
   return Post.findOne({ _id: id })
   .then(post => {
     post.body = body || post.body;
+    post.authors = authors || post.authors;
     return post.save();
   });
 }
