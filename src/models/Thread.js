@@ -1,8 +1,10 @@
 'use strict';
 
 import db from './db.js';
-import Public from './Public';
+import MajorPost from './MajorPost';
 import CustomSet from '../util/CustomSet';
+
+//_____________________________________________________________________________________________________________________
 
 const Schema = db.Schema;
 const ThreadSchema = new Schema({
@@ -11,6 +13,8 @@ const ThreadSchema = new Schema({
     ref: 'Comment',
   }
 });
+
+//_____________________________________________________________________________________________________________________
 
 // create
 ThreadSchema.statics.createItem = createItem;
@@ -22,17 +26,37 @@ ThreadSchema.statics.getItems = getItems;
 ThreadSchema.statics.addComments = addComments;
 ThreadSchema.statics.removeComments = removeComments;
 
-const Thread = Public.discriminator('Thread', ThreadSchema);
+//_____________________________________________________________________________________________________________________
 
+const Thread = MajorPost.discriminator('Thread', ThreadSchema);
+
+//_____________________________________________________________________________________________________________________
+
+/**
+ *
+ * @param thread
+ * @returns {Promise|*}
+ */
 function createItem(thread) {
   const threadToInsert = new Thread(thread);
   return threadToInsert.save();
 }
 
+/**
+ *
+ * @param filter
+ * @returns {Query|Cursor|*|FindOperatorsUnordered|T|FindOperatorsOrdered}
+ */
 function getItems(filter = {}) {
   return Thread.find(filter);
 }
 
+/**
+ *
+ * @param id
+ * @param comments
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addComments(id, comments = []) {
   return Thread.findOne({ _id: id })
   .then(thread => {
@@ -46,6 +70,12 @@ function addComments(id, comments = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param comments
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeComments(id, comments = []) {
   return Thread.findOne({ _id: id })
   .then(thread => {
@@ -58,5 +88,7 @@ function removeComments(id, comments = []) {
     return thread.save();
   });
 }
+
+//_____________________________________________________________________________________________________________________
 
 export default Thread;

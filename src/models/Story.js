@@ -2,8 +2,10 @@
 
 import db from './db.js';
 import requestPromise from 'request-promise';
-import Public from './Public';
+import MajorPost from './MajorPost';
 import CustomSet from '../util/CustomSet';
+
+//_____________________________________________________________________________________________________________________
 
 const Schema = db.Schema;
 const StorySchema = new Schema({
@@ -17,6 +19,8 @@ const StorySchema = new Schema({
   }
 });
 
+//_____________________________________________________________________________________________________________________
+
 // create
 StorySchema.statics.createItem = createItem;
 
@@ -28,7 +32,11 @@ StorySchema.statics.getFreshStories = getFreshStories;
 StorySchema.statics.addComments = addComments;
 StorySchema.statics.removeComments = removeComments;
 
-const Story = Public.discriminator('Story', StorySchema);
+//_____________________________________________________________________________________________________________________
+
+const Story = MajorPost.discriminator('Story', StorySchema);
+
+//_____________________________________________________________________________________________________________________
 
 /**
  * Returns promise to create Story backed by argument and insert into the db
@@ -38,6 +46,15 @@ const Story = Public.discriminator('Story', StorySchema);
 function createItem(story) {
   const storyToInsert = new Story(story);
   return storyToInsert.save();
+}
+
+/**
+ *
+ * @param filter
+ * @returns {Query|Cursor|*|FindOperatorsUnordered|T|FindOperatorsOrdered}
+ */
+function getItems(filter = {}) {
+  return Story.find(filter);
 }
 
 /**
@@ -94,10 +111,12 @@ function buildStory(jsonValues) {
   return storyToInsert.save();
 }
 
-function getItems(filter = {}) {
-  return Story.find(filter);
-}
-
+/**
+ *
+ * @param id
+ * @param comments
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addComments(id, comments = []) {
   return Story.findOne({ _id: id })
   .then(story => {
@@ -111,6 +130,12 @@ function addComments(id, comments = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param comments
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeComments(id, comments = []) {
   return Story.findOne({ _id: id })
   .then(story => {
@@ -123,5 +148,7 @@ function removeComments(id, comments = []) {
     return story.save();
   });
 }
+
+//_____________________________________________________________________________________________________________________
 
 export default Story;

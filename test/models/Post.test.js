@@ -1,7 +1,7 @@
 'use strict';
 
-const PostMethods  = require( '../../src/models/Post').default.schema.statics;
-const Post = require( '../../src/models/Post').default;
+const PostMethods  = require( '../../src/models/MinorPost').default.schema.statics;
+const Post = require( '../../src/models/MinorPost').default;
 const postsSuccess = require('../test-data/posts').successCases;
 
 const expect = require('chai').expect;

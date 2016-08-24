@@ -6,6 +6,8 @@ import isEmail from 'validator/lib/isEmail';
 import uniqueValidator from 'mongoose-unique-validator';
 import CustomSet from '../util/CustomSet';
 
+//_____________________________________________________________________________________________________________________
+
 const Schema = db.Schema;
 const UserSchema = new Schema({
   name: { type: String, required: true },
@@ -36,6 +38,8 @@ const UserSchema = new Schema({
 UserSchema.plugin(uniqueValidator);
 const iterations = 10;
 
+//_____________________________________________________________________________________________________________________
+
 // create
 UserSchema.statics.createItem = createUser;
 UserSchema.statics.verifyPassword = verifyPassword;
@@ -59,7 +63,11 @@ UserSchema.statics.removeBountiesContributed = removeBountiesContributed;
 // delete
 UserSchema.statics.deleteItem = deleteUser;
 
+//_____________________________________________________________________________________________________________________
+
 const User = db.model('User', UserSchema);
+
+//_____________________________________________________________________________________________________________________
 
 /**
  * Method returning promise to create a new user
@@ -123,8 +131,12 @@ function verifyPassword({ email, password }) {
   .then(user => bcrypt.compare(password, user.hashedPassword));
 }
 
-// projects
-
+/**
+ *
+ * @param id
+ * @param projects
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addProjectsCreated(id, projects = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -138,6 +150,12 @@ function addProjectsCreated(id, projects = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param projects
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeProjectsCreated(id, projects = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -151,6 +169,12 @@ function removeProjectsCreated(id, projects = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param projects
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addProjectsContributed(id, projects = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -164,6 +188,12 @@ function addProjectsContributed(id, projects = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param projects
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeProjectsContributed(id, projects = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -177,8 +207,12 @@ function removeProjectsContributed(id, projects = []) {
   });
 }
 
-// bounties
-
+/**
+ *
+ * @param id
+ * @param bounties
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addBountiesCreated(id, bounties = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -192,6 +226,12 @@ function addBountiesCreated(id, bounties = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param bounties
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeBountiesCreated(id, bounties = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -205,6 +245,12 @@ function removeBountiesCreated(id, bounties = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param bounties
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addBountiesContributed(id, bounties = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -218,6 +264,12 @@ function addBountiesContributed(id, bounties = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param bounties
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeBountiesContributed(id, bounties = []) {
   return User.findOne({ _id: id })
   .then(user => {
@@ -230,5 +282,7 @@ function removeBountiesContributed(id, bounties = []) {
     return user.save();
   });
 }
+
+//_____________________________________________________________________________________________________________________
 
 export default User;

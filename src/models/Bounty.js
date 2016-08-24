@@ -1,8 +1,10 @@
 'use strict';
 
 import db from './db.js';
-import Post from './Post';
+import MinorPost from './MinorPost';
 import CustomSet from '../util/CustomSet';
+
+//_____________________________________________________________________________________________________________________
 
 const Schema = db.Schema;
 const BountySchema = new Schema({
@@ -28,6 +30,8 @@ const BountySchema = new Schema({
   }
 });
 
+//_____________________________________________________________________________________________________________________
+
 // create
 BountySchema.statics.createItem = createBounty;
 
@@ -40,17 +44,35 @@ BountySchema.statics.removeProjects = removeProjects;
 BountySchema.statics.incrementViews = incrementViews;
 BountySchema.statics.updateData = updateData;
 
-const Bounty = Post.discriminator('Bounty', BountySchema);
+const Bounty = MinorPost.discriminator('Bounty', BountySchema);
 
+//_____________________________________________________________________________________________________________________
+
+/**
+ *
+ * @param bounty
+ * @returns {Promise|*}
+ */
 function createBounty(bounty) {
   const bountyToInsert = new Bounty(bounty);
   return bountyToInsert.save();
 }
 
+/**
+ *
+ * @param filter
+ * @returns {Query|Cursor|*|FindOperatorsUnordered|T|FindOperatorsOrdered}
+ */
 function getBounties(filter = {}) {
   return Bounty.find(filter);
 }
 
+/**
+ *
+ * @param id
+ * @param projects
+ * @returns {Promise|Promise.<TResult>}
+ */
 function addProjects(id, projects = []) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
@@ -64,6 +86,12 @@ function addProjects(id, projects = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param projects
+ * @returns {Promise|Promise.<TResult>}
+ */
 function removeProjects(id, projects = []) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
@@ -77,6 +105,11 @@ function removeProjects(id, projects = []) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @returns {Promise|Promise.<TResult>}
+ */
 function incrementViews(id) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
@@ -85,6 +118,14 @@ function incrementViews(id) {
   });
 }
 
+/**
+ *
+ * @param id
+ * @param body
+ * @param authors
+ * @param tags
+ * @returns {Promise|Promise.<TResult>}
+ */
 function updateData(id, { body, authors, tags }) {
   return Bounty.findOne({ _id: id })
   .then(bounty => {
@@ -94,6 +135,8 @@ function updateData(id, { body, authors, tags }) {
     return bounty.save();
   });
 }
+
+//_____________________________________________________________________________________________________________________
 
 export default Bounty;
 

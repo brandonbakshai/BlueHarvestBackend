@@ -134,21 +134,24 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
-  /* updateTags */
+  /* updateData */
 
-  it(`updateTags should successfully add an array of string tags to a bounty`, function (done) {
+  it(`updateData should successfully update body, authors, and tags`, function (done) {
+    const body = "oi";
+    const authors = [mongoose.Types.ObjectId()];
     const tags = ['social justice', 'social networking', 'android'];
+    const update = { body, authors, tags };
 
     // get bounty with title "bounty one"
     BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {
       const bounty = bounties[0];
       expect(bounty.meta.tags.length).to.equal(0);
-      return BountyMethods.updateTags(bounty._id, tags);
+      expect(bounty.body).to.not.equal(body);
+      return BountyMethods.updateData(bounty._id, update);
     })
     .then(bounty => {
-      console.log(typeof bounty.meta.tags[0]);
-      console.log(typeof tags[0]);
+      expect(bounty.body).to.equal(body);
       assert(checkEquality(bounty.meta.tags, tags));
       done();
     })
