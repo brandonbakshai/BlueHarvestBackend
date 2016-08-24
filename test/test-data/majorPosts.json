@@ -1,0 +1,52 @@
+{
+  "successCases": [
+    {
+      "title": "story one",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "thumbnail": {
+        "contentAddress": "www.google.com",
+        "height": 500,
+        "width": 500
+      },
+      "media": [
+        {
+          "typeOfMedia": "image",
+          "contentAddress": "www.google.com",
+          "height": 500,
+          "width": 500
+        }
+      ],
+      "urls": [
+        {
+          "description": "This is an example description for a url.",
+          "address": "www.google.com"
+        }
+      ],
+      "url": "https://www.google.com"
+    },
+    {
+      "title": "story two",
+      "body": "This is an example description. It is my example description. There are many like it, but this one is mine. Without my example solution I am nothing, without me my example solution is nothing.",
+      "thumbnail": {
+        "contentAddress": "www.facebook.com",
+        "height": 500,
+        "width": 500
+      },
+      "media": [
+        {
+          "typeOfMedia": "image",
+          "contentAddress": "www.facebook.com",
+          "height": 500,
+          "width": 500
+        }
+      ],
+      "urls": [
+        {
+          "description": "This is an example description for a url.",
+          "address": "www.facebook.com"
+        }
+      ],
+      "url": "https://www.facebook.com"
+    }],
+  "failureCases": []
+}

@@ -10,7 +10,7 @@ function wipeCollection(model, done) {
 }
 
 function getItems(modelMethods, filter, expectedLength, done) {
-  return modelMethods.getItems()
+  return modelMethods.getItems(filter)
   .then((result) => {
     expect(result.length).to.equal(expectedLength);
     done();

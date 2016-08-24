@@ -17,8 +17,10 @@ const it = require('mocha').it;
 
 describe('MajorPost', function () {
 
+  // wipe all data
   before(utilityMethods.wipeCollection(MajorPost));
 
+  // createItem success case
   majorPostsSuccess.forEach(post => {
     it(`should create and insert ${post.title}`, function (done) {
       post.authors = [mongoose.Types.ObjectId()];
@@ -29,6 +31,7 @@ describe('MajorPost', function () {
     });
   });
 
+  // createItem failure case
   majorPostsFailure.forEach(post => {
     it(`should fail on insert of ${post.title}`, function (done) {
       post.authors = [mongoose.Types.ObjectId()];
@@ -41,10 +44,11 @@ describe('MajorPost', function () {
     });
   });
 
+  // getItems
   it(`getMajorPost should return ${numberOfMajorPosts}, the number of majorPosts in majorPosts.json`,
     utilityMethods.getItems(MajorPostMethods, {}, numberOfMajorPosts, done));
 
-
+  // getItems
   it('getMajorPost should return no result',
     utilityMethods.getItems(MajorPostMethods, { name: 'blah' }, 0, done));
 });

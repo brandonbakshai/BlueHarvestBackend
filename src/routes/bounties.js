@@ -24,5 +24,4 @@ router.route('/:bounty_id/downvote')
 router.route('/:bounty_id/view')
 .put(utility.incrementViewsHelper(Bounty));
 
-
 export default router;

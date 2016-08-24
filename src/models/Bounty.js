@@ -44,6 +44,8 @@ BountySchema.statics.removeProjects = removeProjects;
 BountySchema.statics.incrementViews = incrementViews;
 BountySchema.statics.updateData = updateData;
 
+//_____________________________________________________________________________________________________________________
+
 const Bounty = MinorPost.discriminator('Bounty', BountySchema);
 
 //_____________________________________________________________________________________________________________________
@@ -139,4 +141,3 @@ function updateData(id, { body, authors, tags }) {
 //_____________________________________________________________________________________________________________________
 
 export default Bounty;
-

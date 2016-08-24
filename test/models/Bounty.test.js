@@ -22,8 +22,7 @@ describe('Bounty', function () {
   // wipe all data
   before(utilityMethods.wipeCollection(Bounty));
 
-  /* createItem */
-
+  // createItem success case
   bountiesSuccess.forEach(bounty => {
     it(`should create and insert ${bounty.title}`, function (done) {
       bounty.authors = [mongoose.Types.ObjectId()];
@@ -33,6 +32,7 @@ describe('Bounty', function () {
     });
   });
 
+  // createItem failure case
   bountiesFailure.forEach(bounty => {
     it(`should fail on insert of ${bounty.title}`, function (done) {
       bounty.authors = [mongoose.Types.ObjectId()];
@@ -45,13 +45,11 @@ describe('Bounty', function () {
     });
   });
 
-  /* getItems */
-
+  // getItems
   it(`getBounties should return ${numberOfBounties}, the number of bounties in bounties.json`,
     utilityMethods.getItems(BountyMethods, {}, numberOfBounties, done));
 
-  /* addProjects */
-
+  // addProjects
   it(`addProjects should successfully add one project to the projects field of a bounty`, function (done) {
     const project = mongoose.Types.ObjectId();
     const projectSet = new CustomSet();
@@ -73,6 +71,7 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
+  // addProjects
   it(`addProjects should add the same project to the projects field of a bounty with no effect`, function (done) {
     // get bounty with title "bounty one"
     BountyMethods.getItems({ title: "bounty one"})
@@ -88,8 +87,7 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
-  /* removeProjects */
-
+  // removeProjects
   it(`removeProjects should successfully remove a project from the projects field of a bounty`, function (done) {
     // get bounty with title "bounty one"
     BountyMethods.getItems({ title: "bounty one"})
@@ -105,8 +103,7 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
-  /* incrementViews */
-
+  // incrementViews
   it(`incrementViews should successfully increase views of bounty by one`, function (done) {
     // get bounty with title "bounty one"
     BountyMethods.getItems({ title: "bounty one"})
@@ -122,13 +119,11 @@ describe('Bounty', function () {
     .catch(err => done(err));
   });
 
-  /* updateData */
-
+  // updateData
   it(`updateData should successfully update body, authors, and tags`, function (done) {
     const body = "oi";
     const authors = [mongoose.Types.ObjectId()];
     const tags = ['social justice', 'social networking', 'android'];
-    const update = { body, authors, tags };
 
     // get bounty with title "bounty one"
     BountyMethods.getItems({ title: "bounty one"})
@@ -136,7 +131,7 @@ describe('Bounty', function () {
       const bounty = bounties[0];
       expect(bounty.meta.tags.length).to.equal(0);
       expect(bounty.body).to.not.equal(body);
-      return BountyMethods.updateData(bounty._id, update);
+      return BountyMethods.updateData(bounty._id, { body, authors, tags });
     })
     .then(bounty => {
       expect(bounty.body).to.equal(body);

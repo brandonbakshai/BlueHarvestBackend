@@ -104,12 +104,12 @@ function updateData(id, {
   urlsRemove
 }) {
   return MajorPost.findOne({ _id: id })
-  .then(updateBody(body))
-  .then(updateAuthors(authors))
-  .then(updateTags(tags))
-  .then(updateThumbnail(thumbnail))
-  .then(updateMedia(mediaAdd, mediaRemove))
-  .then(updateUrls(urlsAdd, urlsRemove))
+  .then(majorPost => updateBody(body, majorPost))
+  .then(majorPost => updateAuthors(authors, majorPost))
+  .then(majorPost => updateTags(tags, majorPost))
+  .then(majorPost => updateThumbnail(thumbnail, majorPost))
+  .then(majorPost => updateMedia(mediaAdd, mediaRemove, majorPost))
+  .then(majorPost => updateUrls(urlsAdd, urlsRemove, majorPost))
   .then(majorPost => majorPost.save())
 }
 
@@ -159,6 +159,8 @@ function incrementViews(id) {
  * @returns {*}
  */
 function updateBody(body, majorPost) {
+  if (!body) return majorPost;
+
   majorPost.body = body || majorPost.body;
   return majorPost;
 }
@@ -170,6 +172,8 @@ function updateBody(body, majorPost) {
  * @returns {*}
  */
 function updateAuthors(authors, majorPost) {
+  if (!authors) return majorPost;
+
   majorPost.authors = authors || majorPost.authors;
   return majorPost;
 }
@@ -181,6 +185,8 @@ function updateAuthors(authors, majorPost) {
  * @returns {*}
  */
 function updateTags(tags, majorPost) {
+  if (!tags) return majorPost;
+
   majorPost.meta.tags = tags || majorPost.meta.tags;
   return majorPost;
 }
@@ -193,6 +199,8 @@ function updateTags(tags, majorPost) {
  * @returns {*}
  */
 function updateMedia(add, remove, majorPost) {
+  if (!add || !remove) return majorPost;
+
   const mediaMap = new Map();
   // build original
   majorPost.media.forEach(medium => {
@@ -231,6 +239,8 @@ function updateMedia(add, remove, majorPost) {
  * @returns {*}
  */
 function updateUrls(add, remove, majorPost) {
+  if (!add || !remove) return majorPost;
+
   const urlDescripMap = new Map();
 
   // build original
@@ -261,6 +271,8 @@ function updateUrls(add, remove, majorPost) {
  * @returns {*}
  */
 function updateThumbnail(thumbnail, majorPost) {
+  if (!thumbnail) return majorPost;
+
   majorPost.thumbnail = majorPost.thumbnail || {};
   majorPost.thumbnail.contentAddress = thumbnail.contentAddress || majorPost.thumbnail.contentAddress;
   majorPost.thumbnail.height = thumbnail.height || majorPost.thumbnail.height;
