@@ -1,30 +1,23 @@
 'use strict';
 
-const StoryMethods  = require( '../../src/models/Story').default.schema.statics;
-const Story         = require( '../../src/models/Story').default;
+const Story = require( '../../src/models/Story').default;
+const StoryMethods  = Story.schema.statics;
+
 const storiesSuccess = require('../test-data/stories').successCases;
 const storiesFailure = require('../test-data/stories').failureCases;
-
-const expect = require('chai').expect;
-const assert = require('assert');
-
-var mongoose = require('mongoose');
-
-const before      = require('mocha').before;
-const describe       = require('mocha').describe;
-const it            = require('mocha').it;
-
 const numberOfStories = storiesSuccess.length;
 
+const assert = require('assert');
+const mongoose = require('mongoose');
+const utilityMethods = require('../../src/test/utility').default;
+
+const before = require('mocha').before;
+const describe = require('mocha').describe;
+const it = require('mocha').it;
+
 describe('Story', function () {
-  before(function (done) {
-    Story.remove({})
-    .then(() => {
-      console.log('Story collection wiped');
-      done();
-    })
-    .catch(err => done(err));
-  });
+
+  before(utilityMethods.wipeCollection(Story));
 
   storiesSuccess.forEach(story => {
     it(`should create and insert ${story.title}`, function (done) {
@@ -35,22 +28,11 @@ describe('Story', function () {
     });
   });
 
-  it(`getStory should return ${numberOfStories}, the number of stories in stories.json`, function (done) {
-    StoryMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfStories);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it(`getStory should return ${numberOfStories}, the number of stories in stories.json`,
+    utilityMethods.getItems(StoryMethods, {}, numberOfStories, done));
 
-  it('getStory should return no result', function (done) {
-    StoryMethods.getItems({name: 'blah'})
-    .then(function (result) {
-      expect(result.length).to.equal(0);
-      done();
-    })
-    .catch(err => done(err));
-  });
+
+  it('getStory should return no result',
+    utilityMethods.getItems(StoryMethods, { name: 'blah' }, 0, done));
 });
 

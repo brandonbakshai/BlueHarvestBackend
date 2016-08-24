@@ -2,30 +2,23 @@
 
 const Comment = require( '../../src/models/Comment').default;
 const CommentMethods  = Comment.schema.statics;
+
 const commentsSuccess = require('../test-data/comments').successCases;
 const commentsFailure = require('../test-data/comments').failureCases;
+const numberOfComments = commentsSuccess.length;
 
-const expect = require('chai').expect;
 const assert = require('assert');
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const utilityMethods = require('../../src/test/utility').default;
 
 const before = require('mocha').before;
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 
-const numberOfComments = commentsSuccess.length;
-
 describe('Comment', function () {
 
   // wipe all data
-  before(function (done) {
-    Comment.remove({})
-    .then(() => {
-      console.log('Comment collection wiped');
-      done();
-    })
-    .catch(err => done(err));
-  });
+  before(utilityMethods.wipeCollection(Comment));
 
   /* createItem */
 
@@ -52,22 +45,9 @@ describe('Comment', function () {
   });
 
   /* getItems */
+  it(`getItems should return ${numberOfComments}, the number of comments in comments.json`,
+    utilityMethods.getItems(CommentMethods, {}, numberOfComments, done));
 
-  it(`getItems should return ${numberOfComments}, the number of comments in comments.json`, function (done) {
-    CommentMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfComments);
-      done();
-    })
-    .catch(err => done(err));
-  });
-
-  it('getItems should return no result', function (done) {
-    CommentMethods.getItems({title: 'blah'})
-    .then(function (result) {
-      expect(result.length).to.equal(0);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it('getItems should return no result',
+    utilityMethods.getItems(CommentMethods, { title: 'blah' }, numberOfComments, done));
 });

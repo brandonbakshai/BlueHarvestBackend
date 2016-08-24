@@ -1,35 +1,28 @@
 'use strict';
 
-const UserMethods  = require( '../../src/models/User').default.schema.statics;
-const User         = require( '../../src/models/User').default;
+const User = require( '../../src/models/User').default;
+const UserMethods = User.schema.statics;
+
 const usersSuccess = require('../test-data/users').successCases;
 const usersFailure = require('../test-data/users').failureCases;
+const numberOfUsers = usersSuccess.length;
 
-const expect       = require('chai').expect;
-const assert       = require('assert');
+const expect = require('chai').expect;
+const assert = require('assert');
+const utilityMethods = require('../../src/test/utility').default;
 
-var describe       = require('mocha').describe;
-const before       = require('mocha').before;
-const it           = require('mocha').it;
-
-const numberOfSuccesses = usersSuccess.length;
+const describe = require('mocha').describe;
+const before = require('mocha').before;
+const it = require('mocha').it;
 
 describe('User', function () {
-  before(function (done) {
-    User.remove({})
-    .then(() => {
-      console.log('User collection wiped');
-      done();
-    })
-    .catch(err => done(err));
-  });
+
+  before(utilityMethods.wipeCollection(User));
 
   usersSuccess.forEach(user => {
     it(`should create and insert ${user.name}`, function (done) {
       UserMethods.createItem(user)
-      .then((insertedUser) => {
-        done();
-      })
+      .then(() => done())
       .catch(err => done(err));
     });
   });
@@ -45,41 +38,23 @@ describe('User', function () {
     });
   });
 
-  it(`getUser should return ${numberOfSuccesses}, the number of success cases in users.json`, function (done) {
-    UserMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfSuccesses);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it(`getItems should return ${numberOfUsers}, the number of threads in threads.json`,
+    utilityMethods.getItems(UserMethods, {}, numberOfUsers, done));
 
-  it('getUser should return no result', function (done) {
-    UserMethods.getItems({email: 'blah@blah.com'})
-    .then(function (result) {
-      expect(result.length).to.equal(0);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it('getItems should return no result',
+    utilityMethods.getItems(UserMethods, { email: 'blah@blah.com' }, 0, done));
 
   usersFailure.forEach(user => {
     it(`should fail on attempted insertion of ${user.name}`, function (done) {
       UserMethods.createItem(user)
-      .then((insertedUser) => {
+      .then(() => {
         assert.fail();
         done();
       })
-      .catch(err => done());
+      .catch(err => done(err));
     });
   });
 
-  it(`getUser should return ${numberOfSuccesses}, the number of success cases in users.json`, function (done) {
-    UserMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfSuccesses);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it(`getItems should return ${numberOfUsers}, the number of threads in threads.json`,
+    utilityMethods.getItems(UserMethods, {}, numberOfUsers, done));
 });

@@ -1,30 +1,23 @@
 'use strict';
 
-const ProjectMethods  = require( '../../src/models/Project').default.schema.statics;
-const Project         = require( '../../src/models/Project').default;
+const Project = require( '../../src/models/Project').default;
+const ProjectMethods = Project.schema.statics;
+
 const projectsSuccess = require('../test-data/projects').successCases;
 const projectsFailure = require('../test-data/projects').failureCases;
+const numberOfProjects = projectsSuccess.length;
 
-const expect = require('chai').expect;
 const assert = require('assert');
-
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const utilityMethods = require('../../src/test/utility').default;
 
 const before = require('mocha').before;
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 
-const numberOfProjects = projectsSuccess.length;
-
 describe('Project', function () {
-  before(function (done) {
-    Project.remove({})
-    .then(() => {
-      console.log('Project collection wiped');
-      done();
-    })
-    .catch(err => done(err));
-  });
+
+  before(utilityMethods.wipeCollection(Project));
 
   projectsSuccess.forEach(project => {
     it(`should create and insert ${project.title}`, function (done) {
@@ -48,21 +41,10 @@ describe('Project', function () {
     });
   });
 
-  it(`getProject should return ${numberOfProjects}, the number of projects in projects.json`, function (done) {
-    ProjectMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfProjects);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it(`getProject should return ${numberOfProjects}, the number of projects in projects.json`,
+    utilityMethods.getItems(ProjectMethods, {}, numberOfProjects, done));
 
-  it('getProject should return no result', function (done) {
-    ProjectMethods.getItems({name: 'blah'})
-    .then(function (result) {
-      expect(result.length).to.equal(0);
-      done();
-    })
-    .catch(err => done(err));
-  });
+
+  it('getProject should return no result',
+    utilityMethods.getItems(ProjectMethods, { name: 'blah' }, 0, done));
 });

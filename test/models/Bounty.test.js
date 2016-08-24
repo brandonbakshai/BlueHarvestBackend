@@ -2,31 +2,25 @@
 
 const Bounty = require( '../../src/models/Bounty').default;
 const BountyMethods  = Bounty.schema.statics;
+
 const bountiesSuccess = require('../test-data/bounties').successCases;
 const bountiesFailure = require('../test-data/bounties').failureCases;
+const numberOfBounties = bountiesSuccess.length;
 
-const expect = require('chai').expect;
 const assert = require('assert');
 const mongoose = require('mongoose');
 const CustomSet = require('../../src/util/CustomSet').default;
+const utilityMethods = require('../../src/test/utility').default;
 
 const before = require('mocha').before;
 const describe = require('mocha').describe;
 const it = require('mocha').it;
-
-const numberOfBounties = bountiesSuccess.length;
+const expect = require('chai').expect;
 
 describe('Bounty', function () {
 
   // wipe all data
-  before(function (done) {
-    Bounty.remove({})
-    .then(() => {
-      console.log('Bounty collection wiped');
-      done();
-    })
-    .catch(err => done(err));
-  });
+  before(utilityMethods.wipeCollection(Bounty));
 
   /* createItem */
 
@@ -53,14 +47,8 @@ describe('Bounty', function () {
 
   /* getItems */
 
-  it(`getBounties should return ${numberOfBounties}, the number of bounties in bounties.json`, function (done) {
-    BountyMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfBounties);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it(`getBounties should return ${numberOfBounties}, the number of bounties in bounties.json`,
+    utilityMethods.getItems(BountyMethods, {}, numberOfBounties, done));
 
   /* addProjects */
 
@@ -119,7 +107,7 @@ describe('Bounty', function () {
 
   /* incrementViews */
 
-  it(`incrementViews should successfully increase viewcount of bounty by one`, function (done) {
+  it(`incrementViews should successfully increase views of bounty by one`, function (done) {
     // get bounty with title "bounty one"
     BountyMethods.getItems({ title: "bounty one"})
     .then(bounties => {

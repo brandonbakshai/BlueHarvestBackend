@@ -1,30 +1,23 @@
 'use strict';
 
-const ThreadMethods  = require( '../../src/models/Thread').default.schema.statics;
-const Thread         = require( '../../src/models/Thread').default;
+const Thread = require( '../../src/models/Thread').default;
+const ThreadMethods = Thread.schema.statics;
+
 const threadsSuccess = require('../test-data/threads').successCases;
 const threadsFailure = require('../test-data/threads').failureCases;
-
-const expect = require('chai').expect;
-const assert = require('assert');
-
-var mongoose = require('mongoose');
-
-const before      = require('mocha').before;
-const describe       = require('mocha').describe;
-const it            = require('mocha').it;
-
 const numberOfThreads = threadsSuccess.length;
 
+const assert = require('assert');
+const mongoose = require('mongoose');
+const utilityMethods = require('../../src/test/utility').default;
+
+const before = require('mocha').before;
+const describe = require('mocha').describe;
+const it = require('mocha').it;
+
 describe('Thread', function () {
-  before(function (done) {
-    Thread.remove({})
-    .then(() => {
-      console.log('Thread collection wiped');
-      done();
-    })
-    .catch(err => done(err));
-  });
+
+  before(utilityMethods.wipeCollection(Thread));
 
   threadsSuccess.forEach(thread => {
     it(`should create and insert ${thread.title}`, function (done) {
@@ -35,21 +28,9 @@ describe('Thread', function () {
     });
   });
 
-  it(`getThread should return ${numberOfThreads}, the number of threads in threads.json`, function (done) {
-    ThreadMethods.getItems()
-    .then(function (result) {
-      expect(result.length).to.equal(numberOfThreads);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it(`getItems should return ${numberOfThreads}, the number of threads in threads.json`,
+    utilityMethods.getItems(ThreadMethods, {}, numberOfThreads, done));
 
-  it('getThread should return no result', function (done) {
-    ThreadMethods.getItems({name: 'blah'})
-    .then(function (result) {
-      expect(result.length).to.equal(0);
-      done();
-    })
-    .catch(err => done(err));
-  });
+  it('getItems should return no result',
+    utilityMethods.getItems(ThreadMethods, { name: 'blah' }, 0, done));
 });
