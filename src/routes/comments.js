@@ -12,7 +12,12 @@ router.route('/')
 
 router.route('/:comment_id')
   .get(utility.getHelper(Comment))
-  .put(utility.updateHelper(Comment))
   .delete(utility.deleteHelper(Comment));
+
+router.route('/:bounty_id/upvote')
+.put(utility.upvoteHelper(Bounty));
+
+router.route('/:bounty_id/downvote')
+.put(utility.downvoteHelper(Bounty));
 
 export default router;

@@ -18,10 +18,10 @@ const StorySchema = new Schema({
 });
 
 // create
-StorySchema.statics.createItem = createStory;
+StorySchema.statics.createItem = createItem;
 
 // get
-StorySchema.statics.getItems = getStories;
+StorySchema.statics.getItems = getItems;
 StorySchema.statics.getFreshStories = getFreshStories;
 
 // update
@@ -35,7 +35,7 @@ const Story = Public.discriminator('Story', StorySchema);
  * @param story object containing specification for Story instance
  * @returns {Promise|*}
  */
-function createStory(story) {
+function createItem(story) {
   const storyToInsert = new Story(story);
   return storyToInsert.save();
 }
@@ -94,7 +94,7 @@ function buildStory(jsonValues) {
   return storyToInsert.save();
 }
 
-function getStories(filter = {}) {
+function getItems(filter = {}) {
   return Story.find(filter);
 }
 

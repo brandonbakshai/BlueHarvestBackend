@@ -64,15 +64,8 @@ const PublicSchema = new Schema({
 // update
 PublicSchema.statics.upvote = upvote;
 PublicSchema.statics.downvote = downvote;
-
-PublicSchema.statics.updateBody = updateBody;
-PublicSchema.statics.updateTags = updateTags;
-PublicSchema.statics.updateAuthors = updateAuthors;
-PublicSchema.statics.updateUrls = updateUrls;
-PublicSchema.statics.updateMedia = updateMedia;
-PublicSchema.statics.updateThumbnail = updateThumbnail;
-
 PublicSchema.statics.incrementViews = incrementViews;
+PublicSchema.statics.updateData = updateData;
 
 // delete
 PublicSchema.statics.deleteItem = deletePost;
@@ -103,83 +96,109 @@ function incrementViews(id) {
   });
 }
 
-function updateBody(id, { body }) {
+function updateData(id, {
+  body,
+  authors,
+  tags,
+  thumbnail,
+  media: {
+    add,
+    remove
+  },
+  urls: {
+    add,
+    remove
+  }
+}) {
   return Public.findOne({ _id: id })
-  .then(post => {
-    post.body = body || post.body;
-    return post.save();
-  });
+    .then(updateBody(body))
+    .then(updateAuthors(authors))
+    .then(updateTags(tags))
+    .then(updateThumbnail(thumbnail))
+    .then(updateMedia(media.add, media.remove))
+    .then(updateUrls(urls.add, urls.remove))
+    .then(post => post.save())
 }
 
-function updateAuthors(id, authors) {
-  return Public.findOne({ _id: id })
-  .then(post => {
-    post.authors = authors;
-    return post.save();
-  });
+function updateBody(body, post) {
+  post.body = body || post.body;
+  return post;
 }
 
-function updateTags(id, tags) {
-  return Public.findOne({ _id: id })
-  .then(post => {
-    post.meta.tags = tags;
-    return post.save();
-  });
+function updateAuthors(authors, post) {
+  post.authors = authors;
+  return post;
+}
+
+function updateTags(tags, post) {
+  post.meta.tags = tags;
+  return post;
 }
 
 /* update media */
 
-function updateMedia(id, add, remove) {
+function updateMedia(add, remove, post) {
   const mediaMap = new Map();
-  return Public.findOne({ _id: id })
-  .then(post => {
-    // build original
-    post.media.forEach(medium => {
-      const value = {
-        height: medium.height,
-        width: medium.width,
-        typeOfMedia: medium.typeOfMedia
-      };
+  // build original
+  post.media.forEach(medium => {
+    const value = {
+      height: medium.height,
+      width: medium.width,
+      typeOfMedia: medium.typeOfMedia
+    };
 
-      mediaMap.set(medium.contentAddress, value);
-    });
+    mediaMap.set(medium.contentAddress, value);
+  });
 
-    // add - includes update descrips
-    add.keys().forEach(contentAddress => mediaMap.set(contentAddress, add.get(contentAddress)));
+  // add - includes update descrips
+  add.keys().forEach(contentAddress => mediaMap.set(contentAddress, add.get(contentAddress)));
 
-    // remove
-    remove.keys().forEach(contentAddress => mediaMap.delete(contentAddress));
-  })
+  // remove
+  remove.keys().forEach(contentAddress => mediaMap.delete(contentAddress));
 
+  const mediaSet = new Set();
+  mediaMap.forEach((value, key) => {
+    value.contentaddress = key;
+    mediaSet.add(value);
+  });
+
+  // TODO: is the ... necessary?
+  post.media = [...mediaSet];
 }
 
 /* update urls */
 
-function updateUrls(id, add, remove) {
+function updateUrls(add, remove, post) {
   const urlDescripMap = new Map();
-  return Public.findOne({ _id: id })
-  .then(post => {
-    // build original
-    post.urls.forEach(url => urlDescripMap.set(url.address, url.description));
 
-    // add - includes update descrips
-    add.keys().forEach(address => urlDescripMap.set(address, add.get(address)));
+  // build original
+  post.urls.forEach(url => urlDescripMap.set(url.address, url.description));
 
-    // remove
-    remove.keys().forEach(address => urlDescripMap.delete(address));
-  })
+  // add - includes update descrips
+  add.keys().forEach(address => urlDescripMap.set(address, add.get(address)));
+
+  // remove
+  remove.keys().forEach(address => urlDescripMap.delete(address));
+
+  const urlSet = new Set();
+  urlDescripMap.forEach((value, key) => {
+    value.address = key;
+    urlSet.add(value);
+  });
+
+  // TODO: is the ... necessary?
+  post.urls = [...urlSet];
+
+  return post;
 }
 
-function updateThumbnail(id, thumbnail) {
-  return Public.findOne({ _id: id })
-  .then(post => {
-    post.thumbnail = post.thumbnail || {};
-    post.thumbnail.contentAddress = thumbnail.contentAddress || post.thumbnail.contentAddress;
-    post.thumbnail.height = thumbnail.height || post.thumbnail.height;
-    post.thumbnail.width = thumbnail.width || post.thumbnail.width;
+function updateThumbnail(thumbnail, post) {
+  post.thumbnail = post.thumbnail || {};
+  post.thumbnail.contentAddress = thumbnail.contentAddress || post.thumbnail.contentAddress;
+  post.thumbnail.height = thumbnail.height || post.thumbnail.height;
+  post.thumbnail.width = thumbnail.width || post.thumbnail.width;
 
-    return post.save();
-  });
+  return post;
 }
 
 

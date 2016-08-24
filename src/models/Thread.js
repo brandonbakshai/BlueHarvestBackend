@@ -13,10 +13,10 @@ const ThreadSchema = new Schema({
 });
 
 // create
-ThreadSchema.statics.createItem = createThread;
+ThreadSchema.statics.createItem = createItem;
 
 // get
-ThreadSchema.statics.getItems = getThreads;
+ThreadSchema.statics.getItems = getItems;
 
 // update
 ThreadSchema.statics.addComments = addComments;
@@ -24,12 +24,12 @@ ThreadSchema.statics.removeComments = removeComments;
 
 const Thread = Public.discriminator('Thread', ThreadSchema);
 
-function createThread(thread) {
+function createItem(thread) {
   const threadToInsert = new Thread(thread);
   return threadToInsert.save();
 }
 
-function getThreads(filter = {}) {
+function getItems(filter = {}) {
   return Thread.find(filter);
 }
 
